@@ -202,17 +202,17 @@ class ConfigController extends Config
 
         $data['price'] = $val_total;
 
+        $id_products_likes = [];
 
         foreach($itens_likes as $id_product){
 
+            $id_product = $id_product['id_product'];
 
+            array_push($id_products_likes, $id_product);
 
         }
 
-        echo '<pre>';
-        print_r($itens_likes);
-        echo '</pre>'; exit;
-
+        $data['id_products_likes'] = $id_products_likes;
 
         return $data;
 

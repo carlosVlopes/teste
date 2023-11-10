@@ -43,4 +43,24 @@ class ItensCurtidosController
 
     }
 
+    public function removeLikes()
+    {
+        if((!isset($_SESSION['user_id'])) and (!isset($_SESSION['user_name']))  and (!isset($_SESSION['user_email']))){
+
+            echo json_encode(['status' => 'no_logged']);
+
+            exit;
+
+        }
+
+        $id_product = $_POST['id'];
+
+        echo json_encode($this->model->remove_likes($id_product));
+
+        exit;
+
+
+    }
+
+
 }

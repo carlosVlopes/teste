@@ -34,6 +34,7 @@ class HomeController
 
         $galery_instagram = $data['galery_instagram'];
 
+
         require_once "app/sts/Views/home/_view.php";
     }
 }

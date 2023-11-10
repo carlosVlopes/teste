@@ -47,13 +47,7 @@ $(function(){
                 },
             error: function(XMLHttpRequest, textStatus, errorThrown)
             {
-                $(".notification").children().removeClass("alert-success");
-
-                $(".notification").children().addClass("alert-danger");
-
-                $(".notification").show();
-
-                $('#msg').text('Ops! um erro foi encontrado, tente novamente mais tarde!');
+                console.log('precisa estar logado!')
             }
         });
 
@@ -77,6 +71,10 @@ $(function(){
                 {
                     el.attr('src', 'http://192.168.30.15/estudo/carlos/MVC-template_completo/app/sts/assets/img/icon/heart_red.png')
 
+                    el.removeClass('add-likes');
+
+                    el.addClass('remove-likes');
+
                 }
                 else
                 {
@@ -85,13 +83,43 @@ $(function(){
                 },
             error: function(XMLHttpRequest, textStatus, errorThrown)
             {
-                $(".notification").children().removeClass("alert-success");
+                console.log('precisa estar logado!')
+            }
+        });
 
-                $(".notification").children().addClass("alert-danger");
+    });
 
-                $(".notification").show();
+// ------- removendo aos items curtidos -----------------------
 
-                $('#msg').text('Ops! um erro foi encontrado, tente novamente mais tarde!');
+     $(document).on('click', '.remove-likes', function(){
+
+        let el = $(this);
+
+        let id_product = el.parent().parent().parent().find('.id_product').val();
+
+        $.ajax({
+            url: "itens-curtidos/removeLikes",
+            data: "id=" + id_product,
+            dataType:'json',
+            type:'post',
+            success: function(data) {
+                if(data.status == 'success')
+                {
+                    el.attr('src', 'http://192.168.30.15/estudo/carlos/MVC-template_completo/app/sts/assets/img/icon/heart.png')
+
+                    el.removeClass('remove-likes');
+
+                    el.addClass('add-likes');
+
+                }
+                else
+                {
+                    console.log('precisa estar logado!')
+                }
+                },
+            error: function(XMLHttpRequest, textStatus, errorThrown)
+            {
+                console.log('precisa estar logado!')
             }
         });
 

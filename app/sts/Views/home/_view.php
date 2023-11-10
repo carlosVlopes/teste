@@ -128,7 +128,11 @@
                                 <?php endIf ?>
                                 <ul class="product__hover">
                                     <input type="hidden" class="id_product" value="<?= $product['id_product'] ?>">
-                                    <li><a href="javascript:;"><img src="<?= URL ?>app/sts/assets/img/icon/heart.png" alt="Favoritar" class="add-likes"></a></li>
+                                    <?php if(in_array($product['id_product'],$this->config_cart_likes['id_products_likes'])): ?>
+                                        <li><a href="javascript:;"><img src="<?= URL ?>app/sts/assets/img/icon/heart_red.png" alt="Favoritar" class="remove-likes"></a></li>
+                                    <?php else: ?>
+                                        <li><a href="javascript:;"><img src="<?= URL ?>app/sts/assets/img/icon/heart.png" alt="Favoritar" class="add-likes"></a></li>
+                                    <?php endIf ?>
                                     <li><a href="produto/<?= $product['id_product'] ?>"><img src="<?= URL ?>app/sts/assets/img/icon/search.png" alt=""></a></li>
                                 </ul>
                             </div>
@@ -161,7 +165,11 @@
                                 <?php endIf ?>
                                 <ul class="product__hover">
                                     <input type="hidden" class="id_product" value="<?= $product['id_product'] ?>">
-                                    <li><a href="javascript:;"><img src="<?= URL ?>app/sts/assets/img/icon/heart.png" alt="Favoritar" class="add-likes"></a></li>
+                                    <?php if(in_array($product['id_product'],$this->config_cart_likes['id_products_likes'])): ?>
+                                        <li><a href="javascript:;"><img src="<?= URL ?>app/sts/assets/img/icon/heart_red.png" alt="Favoritar" class="remove-likes"></a></li>
+                                    <?php else: ?>
+                                        <li><a href="javascript:;"><img src="<?= URL ?>app/sts/assets/img/icon/heart.png" alt="Favoritar" class="add-likes"></a></li>
+                                    <?php endIf ?>
                                     <li><a href="produto/<?= $product['id_product'] ?>"><img src="<?= URL ?>app/sts/assets/img/icon/search.png" alt=""></a></li>
                                 </ul>
                             </div>

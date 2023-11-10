@@ -27,6 +27,17 @@ class ItensCurtidosModel
 
     }
 
+    public function remove_likes($id_product)
+    {
+        $id_user = $_SESSION['user_id'];
+
+        $this->query['delete']->delete('lk_likes_association', "WHERE id_product = :id_product AND id_user = :id_user", "id_product={$id_product}&id_user={$id_user}");
+
+        $result = $this->query['delete']->getResult();
+
+        return ($result) ? ['status' => 'success'] : ['status' => 'error'];
+
+    }
 
 
 }
