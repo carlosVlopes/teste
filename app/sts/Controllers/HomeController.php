@@ -5,35 +5,34 @@ namespace Sts\Controllers;
 class HomeController
 {
     
-    public function __construct($model){
+    public function __construct($model, $config_cart_likes){
 
         $this->model = $model;
 
         $this->pageReturn = URL . 'home' ;
 
+        $this->pageAddCart = URL . 'carrinho/addCart' ;
+
+        $this->config_cart_likes = $config_cart_likes;
+
+        $this->page = 'home';
     }
 
     public function index()
     {
-        // $error = false;
+        $data = $this->model->getInfos();
 
-        // if(isset($_GET['categoria'])){
+        $main_banners = $data['banners'];
 
-        //     $category = $_GET['categoria'];
+        $main_itens = $data['itens'];
 
-        //     $products = $this->model->get_products_category($category);
+        $new_products = $data['new_products'];
 
-        //     if(!$products) $error = true;
+        $best_seller_products = $data['best_seller_products'];
 
-        // }else{
-        //     $products = $this->model->get_products();
-        // }
+        $main_promotion = $data['main_promotion'];
 
-        $main_banners = $this->model->get_banners();
-
-        $main_itens = $this->model->get_itens();
-
-        $products = $this->model->get_products();
+        $galery_instagram = $data['galery_instagram'];
 
         require_once "app/sts/Views/home/_view.php";
     }

@@ -12,28 +12,13 @@ class ContatoModel
 
     }
 
-    public function create(array $data): bool
+    public function saveContact(array $data)
     {
-        $this->data = $data;
+        $this->query['create']->exeCreate("ct_contacts", $data);
 
-        $this->query['create']->exeCreate("sts_contacts_msgs", $this->data);
+        if (!$this->query['create']->getResult()) return ['status' => 'error'];
 
-        if ($this->query['create']->getResult()) {
-            $_SESSION['msg'] = "<p class='alert-success'>Mensagem enviada com sucesso!</p>";
-        } else {
-            $_SESSION['msg'] = "<p class='alert-danger'>Erro: Mensagem não enviada com sucesso!</p>";
-        }
+        return ['status' => 'success'];
     }
 
-    public function get_info()
-    {
-        $this->query['fullRead']->fullRead("SELECT *
-                            FROM sts_contents_contacts
-                            WHERE id=:id
-                            LIMIT :limit", "id=1&limit=1");
-        $data = $this->query['fullRead']->getResult();
-
-        return $data[0];
-
-    }
 }

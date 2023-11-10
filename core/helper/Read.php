@@ -44,7 +44,7 @@ class Read extends Conn
      * 
      * @return void
      */
-    public function exeRead(string $table, string|null $terms = null, string|null $parseString = null): void
+    public function exeRead(string $table, string|null $terms = null, string|null $parseString = null)
     {
         if (!empty($parseString)) {
             parse_str($parseString, $this->values);
@@ -62,13 +62,16 @@ class Read extends Conn
      * 
      * @return void
      */
-    public function fullRead(string $query, string|null $parseString = null): void
+    public function fullRead(string $query, string|null $parseString = null, $debug = false)
     {
         $this->select = $query;
+
+        $this->debug = $debug;
+
         if (!empty($parseString)) {
             parse_str($parseString, $this->values);
         }
-        $this->exeInstruction();
+        return $this->exeInstruction();
     }
 
     /**
@@ -77,15 +80,24 @@ class Read extends Conn
      * 
      * @return void
      */
-    private function exeInstruction(): void
+    private function exeInstruction()
     {
         $this->connection();
         try {
             $this->exeParameter();
+
+            if($this->debug){
+
+                echo '<pre>';
+                print_r($this->query);
+                echo '</pre>'; exit;
+
+            }
             $this->query->execute();
-            $this->result = $this->query->fetchAll();
+
+            return $this->query->fetchAll();
         } catch (PDOException $err) {
-            $this->result = null;
+            return null;
         }
     }
 

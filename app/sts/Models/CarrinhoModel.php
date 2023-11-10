@@ -12,27 +12,21 @@ class CarrinhoModel
 
     }
 
-    public function get_products(): array|null
+
+    public function addCart($id_product)
     {
+        $data['id_user'] = $_SESSION['user_id'];
 
-        $this->query['select']->exeSelect("pr_products", '', 'ORDER BY orderby ASC', '');
+        $data['id_product'] = $id_product;
 
-        $data =$this->query['select']->getResult();
+        $this->query['create']->exeCreate("cr_cart_association", $data);
 
-        return $data;
+        $result = $this->query['create']->getResult();
+
+        return ($result) ? ['status' => 'success'] : ['status' => 'error'];
+
     }
 
-    public function get_products_category($category)
-    {
 
-        $this->query['fullRead']->fullRead("SELECT pr.*, ct.name AS name_category
-                                            FROM pr_products AS pr
-                                            INNER JOIN pr_categories AS ct
-                                            ON ct.id_category = pr.id_category
-                                            WHERE ct.name = :category", "category={$category}");
-
-        return $this->query['fullRead']->getResult();
-
-    }
 
 }

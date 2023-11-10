@@ -15,12 +15,27 @@
     <link href="<?=URLADM?>app/adms/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?=URLADM?>app/adms/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
 
-    <link href="<?=URLADM?>app/adms/assets/css/animate.css" rel="stylesheet">
-    <link href="<?=URLADM?>app/adms/assets/css/style.css" rel="stylesheet">
-
     <link href="<?=URLADM?>app/adms/assets/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
 
+    <link href="<?=URLADM?>app/adms/assets/css/plugins/iCheck/custom.css" rel="stylesheet">
+
+    <link href="<?=URLADM?>app/adms/assets/css/plugins/chosen/chosen.css" rel="stylesheet">
+
+    <link href="<?=URLADM?>app/adms/assets/css/plugins/cropper/cropper.min.css" rel="stylesheet">
+
+    <link href="<?=URLADM?>app/adms/assets/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
+    <link href="<?=URLADM?>app/adms/assets/css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet">
+    <link href="<?=URLADM?>app/adms/assets/css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet">
+
+    <link href="<?=URLADM?>app/adms/assets/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="<?=URLADM?>app/adms/assets/css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
+
     <link href="<?=URLADM?>app/adms/assets/css/plugins/select2/select2.min.css" rel="stylesheet">
+
+    <link href="<?=URLADM?>app/adms/assets/css/animate.css" rel="stylesheet">
+    <link href="<?=URLADM?>app/adms/assets/css/style.css" rel="stylesheet">
 
 </head>
 
@@ -32,3 +47,5 @@
 <script src="<?= URLADM ?>app/adms/assets/js/bootstrap.min.js"></script>
 <script src="<?= URLADM ?>app/adms/assets/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 <script src="<?= URLADM ?>app/adms/assets/js/inspinia.js"></script>
+<script src="<?= URLADM ?>app/adms/assets/js/maskMoney.min.js" type="text/javascript"></script>
+

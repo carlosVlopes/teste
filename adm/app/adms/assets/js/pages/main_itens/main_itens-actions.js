@@ -61,6 +61,12 @@ $(function()
             },
             error: function(XMLHttpRequest, textStatus, errorThrown)
             {
+                $(".notification").children().removeClass("alert-success");
+
+                $(".notification").children().addClass("alert-danger");
+
+                $(".notification").show();
+
                 $('#msg').text('Ops! um erro foi encontrado, tente novamente mais tarde!');
             }
         });

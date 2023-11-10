@@ -34,6 +34,8 @@ $(function()
                 {
                     var parent = el.parent();
 
+                    $(".notification").show();
+
                     $('#msg').text('Ordenação alterada!');
 
                     btedit.show();
@@ -47,70 +49,27 @@ $(function()
                 else
                 {
                     var msg = (data.message) ? data.message : 'Item não encontrado!';
+
+                    $(".notification").children().removeClass("alert-success");
+
+                    $(".notification").children().addClass("alert-danger");
+
+                    $(".notification").show();
+
                     $('#msg').text(msg);
                 }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown)
             {
+                $(".notification").children().removeClass("alert-success");
+
+                $(".notification").children().addClass("alert-danger");
+
+                $(".notification").show();
+
                 $('#msg').text('Ops! um erro foi encontrado, tente novamente mais tarde!');
             }
         });
     });
 
-
-    $(document).on('click', '.toggle_new', function()
-    {
-        let el = $(this);
-
-        let status = el.attr('title');
-
-        let id     = el.parent().find('input[name=product_id]').val();
-
-        $.ajax({
-            url: "produtos/toggle",
-            data: "id=" + id +'&status='+status,
-            dataType:'json',
-            type:'post',
-            success: function(data) {
-                if(data.status == 'success')
-                {
-                    var parent = el.parent();
-
-                    $('#msg').text('Status de novidade alterado!');
-
-                    if(data.new == "Ativo"){
-
-                        el.removeClass("btn-primary");
-
-                        el.addClass("btn-warning");
-
-                        el.removeAttr("title");
-
-                        el.attr('title', 'Desativar');
-
-
-                    }else{
-
-                        el.removeClass("btn-warning");
-
-                        el.addClass("btn-primary");
-
-                        el.removeAttr("title");
-
-                        el.attr('title', 'Ativar');
-
-                    }
-                }
-                else
-                {
-                    var msg = (data.message) ? data.message : 'Item não encontrado!';
-                    $('#msg').text(msg);
-                }
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown)
-            {
-                $('#msg').text('Ops! um erro foi encontrado, tente novamente mais tarde!');
-            }
-        });
-    });
 });

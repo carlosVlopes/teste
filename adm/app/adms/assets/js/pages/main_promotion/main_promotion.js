@@ -1,9 +1,14 @@
-$(document).ready(function(){
+$(function(){
+
     $('#data_1 .input-group.date').datepicker({
-        todayBtn: "linked",
-        keyboardNavigation: false,
-        forceParse: false,
-        calendarWeeks: true,
-        autoclose: true
+        format: 'dd/mm/yyyy',
+        language: 'pt-BR'
     });
+
+    $('#price').maskMoney({
+         prefix: "R$",
+         decimal: ",",
+         thousands: "."
+     });
+
 });

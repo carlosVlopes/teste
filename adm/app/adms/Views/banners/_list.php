@@ -24,7 +24,6 @@
 							                    <tr>
 							                    	<th style="width: 200px;">Imagem</th>
 							                        <th>Titulo</th>
-							                        <th style="width: 150px;">Coleção</th>
 							                        <th style="width: 150px;">Ordem</th>
 							                        <th style="width: 150px;">Status</th>
 													<?php if(isset($this->sessionPermi['u_delete']) === false && isset($this->sessionPermi['u_edit']) === false && isset($this->sessionPermi['u_add']) === false && isset($this->sessionPermi['u_view']) === false) :?>
@@ -47,7 +46,6 @@
 								                    <tr class="gradeX">
 								                        <td><img src="<?= ($image) ? URL . $image : ''?>" style="width:250px;"></td>
 								                        <td><?=$banner['title']?></td>
-								                        <td><?=$banner['collection']?></td>
 								                        <td>
 															<input type="hidden" name="banner_id" value="<?= $banner['id_banner'] ?>">
 	                                                        <span class="text-order"><?=$banner['orderby']?></span>

@@ -12,59 +12,25 @@ class HomeModel
 
     }
 
-    // public function get_products(): array|null
-    // {
-
-    //     $this->query['select']->exeSelect("pr_products", '', 'ORDER BY orderby ASC', '');
-
-    //     $data =$this->query['select']->getResult();
-
-    //     return $data;
-    // }
-
-    // public function get_products_category($category)
-    // {
-
-    //     $this->query['fullRead']->fullRead("SELECT pr.*, ct.name AS name_category
-    //                                         FROM pr_products AS pr
-    //                                         INNER JOIN pr_categories AS ct
-    //                                         ON ct.id_category = pr.id_category
-    //                                         WHERE ct.name = :category", "category={$category}");
-
-    //     return $this->query['fullRead']->getResult();
-
-    // }
-
-    public function get_banners()
+    public function getInfos()
     {
 
         $this->query['select']->exeSelect("hm_banners", '', 'WHERE status = :status ORDER BY orderby ASC', 'status=Ativo');
 
-        $result = $this->query['select']->getResult();
+        $data['banners'] = $this->query['select']->getResult();
 
-        return $result;
+        $data['main_promotion'] = $this->query['fullRead']->fullRead("SELECT * FROM hm_main_promotion",'')[0];
 
-    }
+        $data['itens'] = $this->query['fullRead']->fullRead("SELECT * FROM hm_main_items ORDER BY orderby", '');
 
-    public function get_itens()
-    {
+        $data['galery_instagram'] = $this->query['fullRead']->fullRead("SELECT * FROM hm_galery_instagram ORDER BY orderby", '');
 
-        $this->query['fullRead']->fullRead("SELECT * FROM hm_main_items ORDER BY orderby", '');
+        $data['new_products'] = $this->query['fullRead']->fullRead("SELECT * FROM pr_products Where status = :status ORDER BY orderby", 'status=Novo');
 
-        $result = $this->query['fullRead']->getResult();
+        $data['best_seller_products'] = $this->query['fullRead']->fullRead("SELECT * FROM pr_products Where amount_sales >= :quant ORDER BY orderby", 'quant=10');
 
-        return $result;
+        return $data;
 
-    }
-
-    public function get_products()
-    {
-
-        $this->query['fullRead']->fullRead("SELECT * FROM pr_products ORDER BY orderby", '');
-
-        $result = $this->query['fullRead']->getResult();
-
-        return $result;
 
     }
 

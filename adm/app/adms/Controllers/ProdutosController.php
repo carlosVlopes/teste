@@ -35,7 +35,7 @@ class ProdutosController
 
         $this->pageReturn = URLADM . 'produtos/index';
 
-        $this->pageToggleNew = URLADM . 'produtos/toggle';
+        $this->deletePromotion = URLADM . 'produtos/deletePromotion';
 
         $this->data['sidebarActive'] = "produtos";
 
@@ -51,6 +51,8 @@ class ProdutosController
     public function list()
     {
         $error = false;
+
+        $product_main_promotion = $this->model->get_main_promotion();
 
         $this->dataForm = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
@@ -76,91 +78,85 @@ class ProdutosController
 
     public function insert()
     {
-        if(isset($this->sessionPermi['u_add'])){
 
-            $success = false;
+        $success = false;
 
-            $categories = $this->model->getAllCategories();
+        $categories = $this->model->getAllCategories();
 
-            $this->dataForm = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        $brands = $this->model->get_brands();
 
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $this->dataForm = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-                if($_FILES['image']['error'] == 0){
-                    $this->dataForm['image'] = $_FILES['image'] ? $_FILES['image'] : null;
-                }
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-                if($this->model->create($this->dataForm)){
-
-                    $success = true;
-
-                }
+            if($_FILES['image']['error'] == 0){
+                $this->dataForm['image'] = $_FILES['image'] ? $_FILES['image'] : null;
             }
 
-            require_once "app/adms/Views/produtos/_insert.php";
+            if($this->model->create($this->dataForm)){
 
-        }else{
-            $_SESSION['msg'] = "<p class='alert-danger'>Voce nao tem permissao para acessar essa pagina</p>";
-            $urlRedirect = URLADM . "erro/index";
-            header("Location: $urlRedirect");
+                $success = true;
+
+            }
         }
+
+        require_once "app/adms/Views/produtos/_insert.php";
+
 
     }
 
     public function edit($id)
     {
-        if(isset($this->sessionPermi['u_edit'])){
 
-            $success = false;
+        $success = false;
 
-            $this->dataForm = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        $this->dataForm = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-                if($_FILES['image']['error'] == 0){
-                    $this->dataForm['image'] = $_FILES['image'] ? $_FILES['image'] : null;
-                }
-
-                if($this->model->create($this->dataForm, $id)){
-
-                   $success = true;
-
-                }
-            }else{
-
-                $data = $this->model->getInfo($id);
-
-                $categories = $this->model->getAllCategories();
-
-                $url_image = URLADM . 'app/adms/Views/images/products/' . $data['image'];
+            if($_FILES['image']['error'] == 0){
+                $this->dataForm['image'] = $_FILES['image'] ? $_FILES['image'] : null;
             }
 
-            require_once "app/adms/Views/produtos/_edit.php";
+            if($this->model->create($this->dataForm, $id)){
 
+               $success = true;
+
+            }
         }else{
-            $_SESSION['msg'] = "<p class='alert-danger'>Voce nao tem permissao para acessar essa pagina</p>";
-            $urlRedirect = URLADM . "erro/index";
-            header("Location: $urlRedirect");
+
+            $data = $this->model->getInfo($id);
+
+            $categories = $this->model->getAllCategories();
+
+            $brands = $this->model->get_brands();
+
+            $data['colors'] = explode(',', $data['colors']);
+
         }
+
+        require_once "app/adms/Views/produtos/_edit.php";
 
     }
 
     public function delete($id)
     {
-        if(isset($this->sessionPermi['u_delete'])){
 
-            if($this->model->delete($id)){
+        if($this->model->delete($id)){
 
-                $_SESSION['msg'] = "Produto excluido com sucesso!";
-                header("Location: $this->pageReturn");
+            header("Location: $this->pageReturn");
 
-            }
-
-        }else{
-            $_SESSION['msg'] = "<p class='alert-danger'>Voce nao tem permissao para acessar essa pagina</p>";
-            $urlRedirect = URLADM . "erro/index";
-            header("Location: $urlRedirect");
         }
+
+    }
+
+    public function deletePromotion()
+    {
+
+        if($this->model->deletePromotion()){
+            header("Location: $this->pageReturn");
+        }
+
     }
 
     public function editOrder()
@@ -189,26 +185,45 @@ class ProdutosController
 
     }
 
-    public function toggle()
-    {
-        $data = $_POST;
-
-        $data['new'] = ($data['status'] == "Ativar") ? "Ativo" : "Inativo";
-
-        unset($data['status']);
-
-        echo json_encode($this->model->toggle_new($data));
-
-        exit;
-
-    }
-
     public function promocaoPrincipal($id)
     {
 
-        $success = false;
+        $data = $other_product = $success = false;
 
-        $product = $this->model->getInfo($id);
+        $this->dataForm = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+
+        if(isset($_GET['substituir'])){
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                if($this->model->save_main_promotion($this->dataForm)){
+
+                    $success = true;
+
+                }
+            }
+
+        }else{
+
+            if($this->model->verify_main_promotion($id)){
+
+                $data = $this->model->verify_edit($id);
+
+                if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                    if($this->model->save_main_promotion($this->dataForm)){
+
+                        $success = true;
+
+                    }
+                }
+
+            }else{
+
+                $other_product = true;
+
+            }
+        }
 
         require_once "app/adms/Views/produtos/_main-promotion.php";
 

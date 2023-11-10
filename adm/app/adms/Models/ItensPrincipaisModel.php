@@ -39,9 +39,7 @@ class ItensPrincipaisModel
 
         $this->resultPg = $pagination->getResult();
 
-        $this->query['fullRead']->fullRead("SELECT * FROM hm_main_items ORDER BY orderby LIMIT :limit OFFSET :offset", "limit={$this->limitResult}&offset={$pagination->getOffset()}");
-
-        $result = $this->query['fullRead']->getResult();
+        $result = $this->query['fullRead']->fullRead("SELECT * FROM hm_main_items ORDER BY orderby LIMIT :limit OFFSET :offset", "limit={$this->limitResult}&offset={$pagination->getOffset()}");
 
         return ($result) ? $result : false;
     }
@@ -119,9 +117,7 @@ class ItensPrincipaisModel
     public function getInfo($id)
     {
 
-        $this->query['fullRead']->fullRead("SELECT * FROM hm_main_items WHERE id_item = :id_item","id_item={$id}");
-
-        $result = $this->query['fullRead']->getResult();
+        $result = $this->query['fullRead']->fullRead("SELECT * FROM hm_main_items WHERE id_item = :id_item","id_item={$id}");
 
         return $result[0];
 
@@ -144,9 +140,7 @@ class ItensPrincipaisModel
     public function get_collections()
     {
 
-        $this->query['fullRead']->fullRead("SELECT * FROM pr_collections");
-
-        $result = $this->query['fullRead']->getResult();
+        $result = $this->query['fullRead']->fullRead("SELECT * FROM pr_collections");
 
         return $result;
 
@@ -155,9 +149,7 @@ class ItensPrincipaisModel
     public function get_categories()
     {
 
-        $this->query['fullRead']->fullRead("SELECT * FROM pr_categories ORDER BY orderby ASC");
-
-        $result = $this->query['fullRead']->getResult();
+        $result = $this->query['fullRead']->fullRead("SELECT * FROM pr_categories ORDER BY orderby ASC");
 
         return $result;
 

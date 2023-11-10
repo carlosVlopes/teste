@@ -7,7 +7,7 @@
                     <div class="col-lg-12">
                         <div class="product__details__breadcrumb">
                             <a href="<?= URL ?>home">Home</a>
-                            <a href="<?= URL ?>loja">Shop</a>
+                            <a href="<?= URL ?>loja">Loja</a>
                             <span>Product Details</span>
                         </div>
                     </div>

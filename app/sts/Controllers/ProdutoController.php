@@ -5,9 +5,13 @@ namespace Sts\Controllers;
 class ProdutoController
 {
 
-    public function __construct($model){
+    public function __construct($model, $config_cart){
 
         $this->model = $model;
+
+        $this->products_cart = $config_cart;
+
+        $this->page = 'produto';
 
     }
 
@@ -23,10 +27,6 @@ class ProdutoController
 
             require_once "app/sts/Views/product/_view.php";
         }else{
-
-            echo '<pre>';
-            print_r('listagem');
-            echo '</pre>'; exit;
 
             require_once "app/sts/Views/erro/erro.php";
 

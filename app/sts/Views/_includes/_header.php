@@ -64,7 +64,7 @@
                     <div class="col-lg-6 col-md-5">
                         <div class="header__top__right">
                             <div class="header__top__links">
-                                <a href="#">Entrar</a>
+                                <a href="<?= HOME_URI ?>login">Entrar</a>
                             </div>
                         </div>
                     </div>
@@ -81,11 +81,11 @@
                 <div class="col-lg-6 col-md-6">
                     <nav class="header__menu mobile-menu">
                         <ul>
-                            <li class="active"><a href="<?= HOME_URI ?>">Home</a></li>
+                            <li <?= ($this->page == 'home') ? 'class="active"' : '' ?>><a href="<?= HOME_URI ?>">Home</a></li>
                             <!-- listagem de produtos shop.html-->
-                            <li><a href="<?= HOME_URI ?>loja">Loja</a></li>
+                            <li <?= ($this->page == 'loja') ? 'class="active"' : '' ?>><a href="<?= HOME_URI ?>loja">Loja</a></li>
                             <!-- about.html -->
-                            <li><a href="<?= HOME_URI ?>sobre">Sobre nós</a></li>
+                            <li <?= ($this->page == 'sobre') ? 'class="active"' : '' ?>><a href="<?= HOME_URI ?>sobre">Sobre nós</a></li>
                             <!-- depois tirar esse pages -->
                             <li><a href="#">Pages</a>
                                 <ul class="dropdown">
@@ -97,16 +97,16 @@
                                     <li><a href="./checkout.html">Check Out</a></li>
                                 </ul>
                             </li>
-                            <li><a href="<?= HOME_URI ?>contato">Contato</a></li>
+                            <li <?= ($this->page == 'contato') ? 'class="active"' : '' ?>><a href="<?= HOME_URI ?>contato">Contato</a></li>
                         </ul>
                     </nav>
                 </div>
                 <div class="col-lg-3 col-md-3">
                     <div class="header__nav__option">
                         <a href="#" class="search-switch"><img src="<?= URL ?>app/sts/assets/img/icon/search.png" alt=""></a>
-                        <a href="#"><img src="<?= URL ?>app/sts/assets/img/icon/heart.png" alt=""></a>
-                        <a href="#"><img src="<?= URL ?>app/sts/assets/img/icon/cart.png" alt=""> <span>0</span></a>
-                        <div class="price">$0.00</div>
+                        <a href="#"><img src="<?= URL ?>app/sts/assets/img/icon/heart_red.png" alt=""></a>
+                        <a href="#"><img src="<?= URL ?>app/sts/assets/img/icon/cart.png" alt="" style="width: 20px;"> <span class="qnt_products_cart"><strong><?=$this->config_cart_likes['qnt_products']?></strong></span></a>
+                        <div class="price price_cart">R$<?= $this->config_cart_likes['price'] ?></div>
                     </div>
                 </div>
             </div>

@@ -45,13 +45,55 @@
                                                         <?php endForeach ?>
                                                     </select>
                                                 </div>
-                                                <div class="form-group col-lg-11">
+                                                <div class="form-group col-lg-4">
+                                                    <label>Preço antigo</label>
+                                                    <input type="text" name="old_price" id="old_price" class="form-control" value="<?=$data['old_price']?>">
+                                                </div>
+                                                <div class="form-group col-lg-4">
                                                     <label>Preço</label>
                                                     <input type="text" name="price" id="price" class="form-control" value="<?=$data['price']?>">
                                                 </div>
-                                                <div class="form-group col-lg-1">
+                                                <div class="form-group col-lg-2">
                                                     <label>Ordem</label>
                                                     <input type="number" name="orderby" id="orderby" class="form-control" value="<?=$data['orderby']?>">
+                                                </div>
+                                                <div class="form-group col-lg-2">
+                                                    <label>Status</label>
+                                                    <select class="select2_demo_1 form-control" name="status">
+                                                        <option value="Normal" <?= ($data['status'] == "Normal") ? 'selected="selected"' : ''?>>Normal</option>
+                                                        <option value="Novo" <?= ($data['status'] == "Novo") ? 'selected="selected"' : ''?>>Novo</option>
+                                                        <option value="Promoção" <?= ($data['status'] == "Promoção") ? 'selected="selected"' : ''?>>Promoção</option>
+                                                        <option value="Esgotado" <?= ($data['status'] == "Esgotado") ? 'selected="selected"' : ''?>>Esgotado</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    <label>Marca</label>
+                                                    <select class="select2_demo_1 form-control" name="brand">
+                                                        <?php foreach($brands as $brand): ?>
+                                                            <option value="<?= $brand['name'] ?>" <?= ($data['brand'] == $brand['name']) ? 'selected="selected"' : ''?>><?= $brand['name'] ?></option>
+                                                        <?php endForeach ?>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    <label>Cores</label>
+                                                    <select class="select2_demo_2 form-control" name="colors[]" multiple="multiple">
+                                                        <option value="blue" <?= (in_array('blue', $data['colors'])) ? 'selected="selected"' : '' ?>>Azul</option>
+                                                        <option value="red" <?= (in_array('red', $data['colors'])) ? 'selected="selected"' : '' ?>>Vermelho</option>
+                                                        <option value="yellow" <?= (in_array('yellow', $data['colors'])) ? 'selected="selected"' : '' ?>>Amarelo</option>
+                                                        <option value="orange" <?= (in_array('orange', $data['colors'])) ? 'selected="selected"' : '' ?>>Laranja</option>
+                                                        <option value="purple" <?= (in_array('purple', $data['colors'])) ? 'selected="selected"' : '' ?>>Roxo</option>
+                                                        <option value="white" <?= (in_array('white', $data['colors'])) ? 'selected="selected"' : '' ?>>Branco</option>
+                                                        <option value="black" <?= (in_array('black', $data['colors'])) ? 'selected="selected"' : '' ?>>Preto</option>
+                                                        <option value="brown" <?= (in_array('brown', $data['colors'])) ? 'selected="selected"' : '' ?>>Marrom</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    <label>Genero</label>
+                                                    <select class="select2_demo_1 form-control" name="gender">
+                                                        <option value="Masculino" <?= ($data['gender'] == "Masculino") ? 'selected="selected"' : ''?>>Masculino</option>
+                                                        <option value="Feminino" <?= ($data['gender'] == "Feminino") ? 'selected="selected"' : ''?>>Feminino</option>
+                                                        <option value="Unisex" <?= ($data['gender'] == "Unisex") ? 'selected="selected"' : ''?>>Unisex</option>
+                                                    </select>
                                                 </div>
                                                 <div class="form-group col-lg-12">
                                                     <label>Descrição</label>
@@ -79,7 +121,7 @@
 
     <script src="<?= URLADM ?>app/adms/assets/js/plugins/validate/jquery.validate.min.js"></script>
     <script src="<?= URLADM ?>app/adms/assets/js/plugins/validate/localization/messages_pt_BR.min.js"></script>
-
+    <script src="<?= URLADM ?>app/adms/assets/js/plugins/select2/select2.full.min.js"></script>
     <script src="<?= URLADM ?>app/adms/assets/js/pages/products/products.js"></script>
 
     </body>

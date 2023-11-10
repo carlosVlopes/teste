@@ -39,9 +39,7 @@ class BannersHomeModel
 
         $this->resultPg = $pagination->getResult();
 
-        $this->query['fullRead']->fullRead("SELECT * FROM hm_banners ORDER BY orderby LIMIT :limit OFFSET :offset", "limit={$this->limitResult}&offset={$pagination->getOffset()}");
-
-        $result = $this->query['fullRead']->getResult();
+        $result = $this->query['fullRead']->fullRead("SELECT * FROM hm_banners ORDER BY orderby LIMIT :limit OFFSET :offset", "limit={$this->limitResult}&offset={$pagination->getOffset()}");
 
         return ($result) ? $result : false;
     }
@@ -121,9 +119,7 @@ class BannersHomeModel
     public function getInfo($id)
     {
 
-        $this->query['fullRead']->fullRead("SELECT * FROM hm_banners WHERE id_banner = :id_banner","id_banner={$id}");
-
-        $result = $this->query['fullRead']->getResult();
+        $result = $this->query['fullRead']->fullRead("SELECT * FROM hm_banners WHERE id_banner = :id_banner","id_banner={$id}");
 
         return $result[0];
 
@@ -159,9 +155,7 @@ class BannersHomeModel
     public function get_collections()
     {
 
-        $this->query['fullRead']->fullRead("SELECT * FROM pr_collections");
-
-        $result = $this->query['fullRead']->getResult();
+        $result = $this->query['fullRead']->fullRead("SELECT * FROM pr_collections");
 
         return $result;
 

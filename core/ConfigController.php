@@ -28,6 +28,10 @@ class ConfigController extends Config
 
     private $parameter = '';
 
+    private $info = '';
+
+    private $products_cart = [];
+
     /**
      * Recebe a URL do .htaccess
      * Validar a URL
@@ -44,6 +48,10 @@ class ConfigController extends Config
 
             if(isset($this->urlArray[1])){
                 $this->parameter = $this->urlArray[1];
+            }
+
+            if(isset($this->urlArray[2])){
+                $this->info = $this->urlArray[2];
             }
 
             if (isset($this->urlArray[0])) {
@@ -131,11 +139,83 @@ class ConfigController extends Config
 
         $model = new $this->model($querys);
 
-        $classPage = new $this->classLoad($model);
+        if(isset($_SESSION['user_id'])){
+            $this->products_cart = $this->get_products_cart($_SESSION['user_id']);
+        }
+
+        $classPage = new $this->classLoad($model, $this->products_cart);
+
+        if(method_exists($classPage, $this->parameter)){
+
+            if($this->info){
+
+                $classPage->{$this->parameter}($this->info);
+
+            }else{
+
+                $classPage->{$this->parameter}();
+
+            }
+
+
+        }
+
         if (method_exists($classPage, "index")) {
             $classPage->index($this->parameter);
         } else {
             die("Erro: Por favor tente novamente. Caso o problema persista, entre em contato o administrador " . EMAILADM);
         }
     }
+
+
+    private function get_products_cart($id_user)
+    {
+
+        $fullRead = new helper\Read();
+
+        $itens_likes = $fullRead->fullRead("SELECT id_product FROM lk_likes_association WHERE id_user = :id_user", "id_user={$id_user}");
+
+        $a = $fullRead->fullRead("SELECT pr.price
+                                                FROM cr_cart_association AS cr
+                                                INNER JOIN pr_products AS pr
+                                                ON cr.id_product = pr.id_product
+                                                WHERE id_user = :id_user", "id_user={$id_user}");
+        $val_total = 0;
+
+        $qnt_products = 0;
+
+        foreach($a as $key => $price){
+
+            $price = $price['price'];
+
+            $a = explode("R$", $price)[1];
+
+            $a = (float) str_replace(',', '.', $a);
+
+            $val_total += $a;
+
+            $qnt_products ++;
+
+        }
+
+        $data['qnt_products'] = $qnt_products;
+
+        $data['price'] = $val_total;
+
+
+        foreach($itens_likes as $id_product){
+
+
+
+        }
+
+        echo '<pre>';
+        print_r($itens_likes);
+        echo '</pre>'; exit;
+
+
+        return $data;
+
+    }
+
 }

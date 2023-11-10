@@ -45,17 +45,59 @@
                                                         <?php endForeach ?>
                                                     </select>
                                                 </div>
-                                                <div class="form-group col-lg-11">
-                                                    <label>Preço</label>
-                                                    <input type="text" name="price" id="price" class="form-control">
+                                                <div class="form-group col-lg-4">
+                                                    <label>Preço antigo</label>
+                                                    <input type="text" name="old_price" id="old_price" class="form-control">
                                                 </div>
-                                                <div class="form-group col-lg-1">
+                                                <div class="form-group col-lg-4">
+                                                    <label>Preço</label>
+                                                    <input type="text" name="price" id="price" class="form-control" >
+                                                </div>
+                                                <div class="form-group col-lg-2">
                                                     <label>Ordem</label>
                                                     <input type="number" name="orderby" id="orderby" class="form-control">
                                                 </div>
+                                                <div class="form-group col-lg-2">
+                                                    <label>Status</label>
+                                                    <select class="select2_demo_1 form-control" name="status">
+                                                        <option value="Normal">Normal</option>
+                                                        <option value="Novo">Novo</option>
+                                                        <option value="Promoção">Promoção</option>
+                                                        <option value="Esgotado">Esgotado</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    <label>Marca</label>
+                                                    <select class="select2_demo_1 form-control" name="brand">
+                                                        <?php foreach($brands as $brand): ?>
+                                                            <option value="<?= $brand['name'] ?>"><?= $brand['name'] ?></option>
+                                                        <?php endForeach ?>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    <label>Cores</label>
+                                                    <select class="select2_demo_2 form-control" name="colors[]" multiple="multiple">
+                                                        <option value="blue">Azul</option>
+                                                        <option value="red">Vermelho</option>
+                                                        <option value="yellow">Amarelo</option>
+                                                        <option value="orange">Laranja</option>
+                                                        <option value="purple">Roxo</option>
+                                                        <option value="white">Branco</option>
+                                                        <option value="black">Preto</option>
+                                                        <option value="brown">Marrom</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    <label>Genero</label>
+                                                    <select class="select2_demo_1 form-control" name="gender">
+                                                        <option value="Masculino">Masculino</option>
+                                                        <option value="Feminino">Feminino</option>
+                                                        <option value="Unisex">Unisex</option>
+                                                    </select>
+                                                </div>
                                                 <div class="form-group col-lg-12">
                                                     <label>Descrição</label>
-                                                    <textarea name="description" id="description" class="form-control"></textarea>
+                                                    <textarea name="description" id="description" rows="5" class="form-control"></textarea>
                                                 </div>
                                                 <div class="form-group col-lg-12">
                                                     <span>Imagem: 300x300</span>
@@ -79,6 +121,7 @@
         <script src="<?= URLADM ?>app/adms/assets/js/plugins/validate/jquery.validate.min.js"></script>
         <script src="<?= URLADM ?>app/adms/assets/js/plugins/validate/localization/messages_pt_BR.min.js"></script>
         <script src="<?= URLADM ?>app/adms/assets/js/plugins/select2/select2.full.min.js"></script>
+
         <script src="<?= URLADM ?>app/adms/assets/js/pages/products/products.js"></script>
     </body>
 </html>

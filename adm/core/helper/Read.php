@@ -18,22 +18,11 @@ class Read extends Conn
     /** @var array $values Recebe os valores que deve ser atribuidos nos link da QUERY com bindValue */
     private array $values = [];
 
-    /** @var array $result Recebe os registros do banco de dados e retorna para a Models */
-    private array|null $result;
-
     /** @var object $query Recebe a QUERY preparada */
     private object $query;
 
     /** @var object $conn Recebe a conexao com BD */
     private object $conn;
-
-    /**
-     * @return array Retorna o array de dados
-     */
-    function getResult(): array|null
-    {
-        return $this->result;
-    }
 
     /** 
      * Recebe os valores para montar a QUERY.
@@ -62,13 +51,13 @@ class Read extends Conn
      * 
      * @return void
      */
-    public function fullRead(string $query, string|null $parseString = null): void
+    public function fullRead(string $query, string|null $parseString = null)
     {
         $this->select = $query;
         if (!empty($parseString)) {
             parse_str($parseString, $this->values);
         }
-        $this->exeInstruction();
+        return $this->exeInstruction();
     }
 
     /**
@@ -77,15 +66,15 @@ class Read extends Conn
      * 
      * @return void
      */
-    private function exeInstruction(): void
+    private function exeInstruction()
     {
         $this->connection();
         try {
             $this->exeParameter();
             $this->query->execute();
-            $this->result = $this->query->fetchAll();
+            return $this->query->fetchAll();
         } catch (PDOException $err) {
-            $this->result = null;
+            return null;
         }
     }
 

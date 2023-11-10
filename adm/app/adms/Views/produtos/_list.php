@@ -9,17 +9,17 @@
 					                <h5>Lista de Produtos</h5>
 					                <?php if(isset($this->sessionPermi['u_add'])): ?>
 						                <div class="ibox-tools">
+						                	<?php if($product_main_promotion): ?>
+												<a href="<?= $this->deletePromotion?>" class="btn btn-danger btn-m"><i class="fa fa-trash-o"></i> Remover Promoção Principal</a>
+											<?php endif; ?>
 											<a href="<?= $this->pageAdd?>" class="btn btn-primary btn-m">Cadastrar</a>
 						                </div>
 						            <?php endIf ?>
 					            </div>
-					            <?php
-	                                if(isset($_SESSION['msg'])){
-	                                    echo $_SESSION['msg'];
-	                                    unset($_SESSION['msg']);
-	                                }
-	                            ?>
-	                        	<span class="col-lg-12 bg-success" id="msg"></span>
+					            <div class="ibox-content notification" style="display: none;">
+		                            <div class="alert alert-success" id="msg">
+		                            </div>
+		                        </div>
 					            <div class="ibox-content">
 					            	<div class="table-responsive">
 					            		<form action="" method="POST">
@@ -56,7 +56,7 @@
 								                        <td><img src="<?= ($image) ? URL . $image : ''?>" style="width:150px;"></td>
 								                        <td><?=$product['name']?></td>
 								                        <td><?=$product['name_category']?></td>
-								                        <td>R$<?=$product['price']?></td>
+								                        <td><?=$product['price']?></td>
 								                        <td><?=$product['status']?></td>
 								                        <td>
 															<input type="hidden" name="product_id" value="<?= $product['id_product'] ?>">

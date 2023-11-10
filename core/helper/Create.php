@@ -8,7 +8,7 @@ class Create extends Conn
 {
     private string $table;
     private array $data;
-    private string|null $result;
+    private $result;
     private object $insert;
     private string $query;
     private object $conn;
@@ -50,7 +50,7 @@ class Create extends Conn
         try{
             $this->insert->execute($this->data);
 
-            $this->result = $this->conn->lastInsertId();
+            $this->result = true;
         }catch(PDOException $err){
             $this->result = null;
         }
