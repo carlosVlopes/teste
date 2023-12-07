@@ -48,18 +48,21 @@
                                                 </div>
                                                 <div class="form-group col-lg-7">
                                                     <label>Permissões: </label><br>
-                                                    <label> <input type="checkbox" class="i-checks" name="u_delete" id="delete" value="1" <?= (isset($userPermi['u_delete'])) ? 'checked' : ''?>> Deletar</label><br>
-                                                    <label> <input type="checkbox" class="i-checks" name="u_edit" id="edit" value="1" <?= (isset($userPermi['u_edit'])) ? 'checked' : ''?>> Editar</label><br>
-                                                    <label> <input type="checkbox" class="i-checks" name="u_add" id="add" value="1" <?= (isset($userPermi['u_add'])) ? 'checked' : ''?>> Adicionar</label><br>
-                                                    <label> <input type="checkbox" class="i-checks" name="u_view" id="view" value="1" <?= (isset($userPermi['u_view'])) ? 'checked' : ''?>> Visualizar</label>
+                                                    <select class="select2 form-control" multiple="multiple" name="permissions[]">
+                                                        <option value="u_delete" id="delete" <?= (isset($userPermi["u_delete"])) ? 'selected="selected"' : ''?> >Deletar</option>
+                                                        <option value="u_edit" id="edit" <?= (isset($userPermi["u_edit"])) ? 'selected="selected"' : ''?> >Editar</option>
+                                                        <option value="u_add" id="add" <?= (isset($userPermi["u_add"])) ? 'selected="selected"' : ''?> >Adicionar</option>
+                                                        <option value="u_view" id="view" <?= (isset($userPermi["u_view"])) ? 'selected="selected"' : ''?> >Visualizar</option>
+                                                    </select>
                                                 </div>
                                                 <div class="form-group col-lg-12">
                                                     <label>Menus permitidos:</label><br>
-                                                    <?php foreach($all_menus as $menu): ?>
-                                                        <label> <input type="checkbox" class="i-checks" name="m_<?=$menu['link']?>" id="<?=$menu['link']?>" <?= (isset($menusActive['m_' . $menu['link']])) ? 'checked' : ''?> value="1"> <?=$menu['title']?></label><br>
-                                                    <?php endForeach ?>
+                                                    <select class="select2 form-control" multiple="multiple" name="menus[]">
+                                                        <?php foreach($all_menus as $menu): ?>
+                                                            <option value="m_<?=$menu['link']?>" id="<?=$menu['link']?>" <?= (isset($menusActive["m_{$menu['link']}"])) ? 'selected="selected"' : ''?> ><?=$menu['title']?></option>
+                                                        <?php endForeach ?>
+                                                    </select>
                                                 </div>
-
                                                 <div class="form-group col-lg-12">
                                                     <span>Imagem: 300x300</span>
                                                     <input type="file" name="image"><br>
@@ -83,7 +86,7 @@
 
         <script src="<?= URLADM ?>app/adms/assets/js/plugins/validate/jquery.validate.min.js"></script>
         <script src="<?= URLADM ?>app/adms/assets/js/plugins/validate/localization/messages_pt_BR.min.js"></script>
-
+        <script src="<?= URLADM ?>app/adms/assets/js/plugins/select2/select2.full.min.js"></script>
         <script src="<?= URLADM ?>app/adms/assets/js/pages/user/editUser.js"></script>
 
     </body>

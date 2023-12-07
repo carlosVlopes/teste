@@ -135,12 +135,12 @@ class ConfigController extends Config
      */
     private function loadClass(): void
     {
-        $querys = ['select' => new helper\Select(), 'fullRead' => new helper\Read(), 'delete' => new helper\Delete() , 'create' => new helper\Create(), 'update' => new helper\Update(), 'constructJson' => new helper\ConstructJson(), 'valPassword' => new helper\ValPassword(), 'valField' => new helper\ValField(), 'upload' => new helper\Upload(),'valPermissions' => new helper\ValPermissions()];
+        $querys = ['fullRead' => new helper\Read(), 'constructJson' => new helper\ConstructJson(), 'valPassword' => new helper\ValPassword(), 'valField' => new helper\ValField(), 'upload' => new helper\Upload(),'valPermissions' => new helper\ValPermissions(), 'transformPrice' => new helper\TransformPriceInNumber()];
 
         $model = new $this->model($querys);
 
-        if(isset($_SESSION['user_id'])){
-            $this->products_cart = $this->get_products_cart($_SESSION['user_id']);
+        if(isset($_SESSION['site_user_id'])){
+            $this->products_cart = $this->get_products_cart($_SESSION['site_user_id']);
         }
 
         $classPage = new $this->classLoad($model, $this->products_cart);

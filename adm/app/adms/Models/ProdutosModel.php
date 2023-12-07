@@ -27,13 +27,6 @@ class ProdutosModel
 
     public function list(int $page = null, int $qnt_records)
     {
-        $this->query['select']->exeSelect("pr_products", '',"" , "");
-
-        if(empty($this->query['select']->getResult())){
-
-            return false;
-        }
-
         $this->page = (int) $page ? $page : 1;
 
         $this->limitResult = $qnt_records;
@@ -46,10 +39,10 @@ class ProdutosModel
 
         $this->resultPg = $pagination->getResult();
 
-        $result = $this->query['fullRead']->fullRead("SELECT pr.*,ct.name as name_category
+        $result = $this->query['fullRead']->query("SELECT pr.*,ct.name as name_category
                                             FROM pr_products AS pr
                                             inner JOIN pr_categories AS ct
-                                            ON ct.id_category = pr.id_category");
+                                            ON ct.id_category = pr.id_category", [], '', ['s']);
 
         return ($result) ? $result : false;
     }
@@ -89,15 +82,13 @@ class ProdutosModel
 
         if(!$id){ // caso for insert
 
-            $this->query['create']->exeCreate("pr_products", $this->data);
+            $result = $this->query['fullRead']->query("INSERT INTO pr_products :data", $this->data, '', ['i']);
 
-            if(!$this->query['create']->getResult()) return false;
-
-            return true;
+            return ($result) ? true : false;
 
         }else{ // caso for editar
 
-            $as_main_promotion = $this->query['fullRead']->fullRead("SELECT image FROM pr_products WHERE main_promotion = 'Ativo' AND id_product = {$id}");
+            $as_main_promotion = $this->query['fullRead']->query("SELECT image FROM pr_products WHERE main_promotion = 'Ativo' AND id_product = {$id}", [], "",['s']);
 
             if($as_main_promotion){
 
@@ -109,15 +100,15 @@ class ProdutosModel
 
                 }
 
-                $this->query['update']->exeUpdate("hm_main_promotion", ['title' => $this->data['name'], 'price' => $this->data['price'], 'image' => $image], "WHERE id_product = :id_product", "id_product={$id}");
+                $data = ['title' => $this->data['name'], 'price' => $this->data['price'], 'image' => $image];
+
+                $this->query['fullRead']->query("UPDATE hm_main_promotion SET :data WHERE id_product = :id_product", $data, "id_product={$id}", ['u']);
 
             }
 
-            $this->query['update']->exeUpdate("pr_products", $this->data, 'WHERE id_product = :id_product', "id_product={$id}");
+            $result = $this->query['fullRead']->query("UPDATE pr_products SET :data WHERE id_product = :id_product", $this->data, "id_product={$id}", ['u']);
 
-            if(!$this->query['update']->getResult()) return false;
-
-            return true;
+            return ($result) ? true : false;
         }
 
     }
@@ -125,18 +116,19 @@ class ProdutosModel
     public function delete($id)
     {
 
-        $this->query['delete']->delete('pr_products', "WHERE id_product=:id_product", "id_product={$id}");
+        $result = $this->query['fullRead']->query("DELETE FROM pr_products WHERE id_product=:id_product", [], "id_product={$id}", ['d']);
 
-        return $this->query['delete']->getResult();
+        return ($result) ? true : false;
+
     }
 
     public function getInfo($id)
     {
 
-        $result = $this->query['fullRead']->fullRead("SELECT pr.*,ct.name as name_category
+        $result = $this->query['fullRead']->query("SELECT pr.*,ct.name as name_category
                                             FROM pr_products AS pr
                                             inner JOIN pr_categories AS ct
-                                            ON ct.id_category = pr.id_category WHERE id_product = :id_product","id_product={$id}");
+                                            ON ct.id_category = pr.id_category WHERE id_product = :id_product",[],"id_product={$id}",['s']);
 
         return $result[0];
 
@@ -145,26 +137,20 @@ class ProdutosModel
     public function getAllCategories()
     {
 
-        $this->query['select']->exeSelect("pr_categories", '','', '');
-
-        return $this->query['select']->getResult();
+        return $this->query['fullRead']->query("SELECT * FROM pr_categories",[],'',['s']);
 
     }
 
     public function get_brands()
     {
 
-        $this->query['select']->exeSelect("pr_brands", '','', '');
-
-        return $this->query['select']->getResult();
+        return $this->query['fullRead']->query("SELECT * FROM pr_brands",[],'',['s']);
 
     }
 
     public function searchName($data)
     {
-        $this->query['select']->exeSelect("adms_users", 'id,name,email,date_expiry',"WHERE name = :name OR email = :email" , "name={$data['search_name']}&email={$data['search_name']}");
-
-        $result = $this->query['select']->getResult();
+        $result = $this->query['fullRead']->query("SELECT * FROM pr_products WHERE name LIKE '%:name%'", [], "name={$data['search_name']}", ['s']);
 
         return ($result) ? $result : false;
     }
@@ -176,23 +162,20 @@ class ProdutosModel
 
         unset($data['id']);
 
-        $this->query['update']->exeUpdate("pr_products", $data,"WHERE id_product = :id_product", "id_product={$id}");
-
-        $result = $this->query['update']->getResult();
+        $result = $this->query['fullRead']->query("UPDATE pr_products SET :data WHERE id_product = :id_product", $data, "id_product={$id}", ['u']);
 
         return ($result) ? ['status' => 'success', 'orderby' => $data['orderby']] : '';
     }
 
     public function save_main_promotion($data)
     {
+        $this->query['fullRead']->query("UPDATE pr_products SET :data", ['main_promotion' => "Inativo"], '', ['u']);
 
-        $this->query['update']->exeUpdate("pr_products", ['main_promotion' => "Inativo"], '', '');
-
-        $this->query['delete']->delete("hm_main_promotion", '', '');
+        $this->query['fullRead']->query("DELETE FROM hm_main_promotion", [], '', ['d']);
 
         $product = self::getInfo($data['id_product']);
 
-        $this->query['update']->exeUpdate("pr_products", ['main_promotion' => "Ativo", 'price' => $data['price'], 'old_price' => $product['price']], "WHERE id_product = :id_product", "id_product={$data['id_product']}");
+        $this->query['fullRead']->query("UPDATE pr_products SET :data WHERE id_product = :id_product", ['main_promotion' => "Ativo", 'price' => $data['price'], 'old_price' => $product['price']], "id_product={$data['id_product']}", ['u']);
 
         $data['date_expiry'] = implode("-",array_reverse(explode("/",$data['date_expiry'])));
 
@@ -200,11 +183,9 @@ class ProdutosModel
 
         $data['title'] = $product['name'];
 
-        $this->query['create']->exeCreate("hm_main_promotion", $data);
+        $result = $this->query['fullRead']->query("INSERT INTO hm_main_promotion :data", $data, '', ['i']);
 
-        if(!$this->query['create']->getResult()) return false;
-
-        return true;
+        return ($result) ? true : false;
 
 
     }
@@ -212,17 +193,15 @@ class ProdutosModel
     public function verify_main_promotion($id_product)
     {
 
-        $result = $this->query['fullRead']->fullRead("SELECT * FROM pr_products WHERE main_promotion = 'Ativo' AND id_product <> :id_product", "id_product={$id_product}");
+        $result = $this->query['fullRead']->query("SELECT * FROM pr_products WHERE main_promotion = 'Ativo' AND id_product <> :id_product", [], "id_product={$id_product}", ['s']);
 
-        if($result) return false;
-
-        return true;
+        return ($result) ? false : true;
 
     }
 
     public function verify_edit($id_product)
     {
-        $result = $this->query['fullRead']->fullRead("SELECT * FROM hm_main_promotion WHERE id_product = :id_product", "id_product={$id_product}");
+        $result = $this->query['fullRead']->query("SELECT * FROM hm_main_promotion WHERE id_product = :id_product", [], "id_product={$id_product}", ['s']);
 
         return ($result) ? $result[0] : false;
 
@@ -232,11 +211,11 @@ class ProdutosModel
     public function deletePromotion()
     {
 
-        $id_product = $this->query['fullRead']->fullRead("SELECT id_product FROM hm_main_promotion");
+        $id_product = $this->query['fullRead']->query("SELECT id_product FROM hm_main_promotion", [], '', ['s']);
 
-        $this->query['update']->exeUpdate("pr_products", ['main_promotion' => 'Inativo'], "WHERE id_product = :id_product","id_product={$id_product[0]['id_product']}");
+        $this->query['fullRead']->query("UPDATE pr_products SET :data WHERE id_product = :id_product", ['main_promotion' => 'Inativo'],"id_product={$id_product[0]['id_product']}", ['u']);
 
-        $this->query['delete']->delete('hm_main_promotion', "WHERE id_product=:id_product", "id_product={$id_product[0]['id_product']}");
+        $this->query['fullRead']->query("DELETE FROM hm_main_promotion WHERE id_product = :id_product", [], "id_product={$id_product[0]['id_product']}", ['d']);
 
         return $this->query['delete']->getResult();
 
@@ -245,7 +224,7 @@ class ProdutosModel
     public function get_main_promotion()
     {
 
-        $result = $this->query['fullRead']->fullRead("SELECT id_product FROM hm_main_promotion");
+        $result = $this->query['fullRead']->query("SELECT id_product FROM hm_main_promotion", [], '', ['s']);
 
         return ($result) ? $result[0] : null;
 

@@ -26,16 +26,14 @@ class ProdutosGaleriaModel
 
         $data['id_product'] = $id_product;
 
-        $this->query['create']->exeCreate("pr_products_pictures", $data);
+        $result = $this->query['fullRead']->query("INSERT INTO pr_products_pictures :data", $data, '', ['i']);
 
-        return $this->query['create']->getResult();
+        return ($result) ? true : false;
     }
 
     public function delete($id)
     {
-        $this->query['delete']->delete('pr_products_pictures', "WHERE id_picture=:id_picture", "id_picture={$id['id']}");
-
-        $result = $this->query['delete']->getResult();
+        $result = $this->query['fullRead']->query("DELETE FROM pr_products_pictures WHERE id_picture = :id_picture ", [], "id_picture={$id['id']}", ['d']);
 
         return ($result) ? ['status' => 'success'] : ['status' => 'error'];
     }
@@ -44,9 +42,7 @@ class ProdutosGaleriaModel
     public function getGaleria($id)
     {
 
-        $this->query['select']->exeSelect("pr_products_pictures", '', "WHERE id_product = :id_product", "id_product={$id}");
-
-        return $this->query['select']->getResult();
+        return $this->query['fullRead']->query("SELECT * FROM pr_products_pictures WHERE id_product = :id_product", [], "id_product={$id}", ['s']);
 
     }
 
@@ -56,18 +52,14 @@ class ProdutosGaleriaModel
 
         unset($data['id']);
 
-        $this->query['update']->exeUpdate("pr_products_pictures", $data, "WHERE id_picture=:id_picture", "id_picture={$id}");
-
-        $result = $this->query['update']->getResult();
+        $result = $this->query['fullRead']->query("UPDATE pr_products_pictures SET :data WHERE id_picture = :id_picture", $data, "id_picture={$id}", ['u']);
 
         return ($result) ? ['status' => 'success'] : ['status' => 'error'];
     }
 
     private function getEndOrder($id_product)
     {
-        $this->query['select']->exeSelect("pr_products_pictures", 'orderby', 'WHERE id_product=:id_product ORDER BY orderby DESC limit 1', "id_product={$id_product}");
-
-        $result = $this->query['select']->getResult();
+        $result = $this->query['fullRead']->query("SELECT orderby FROM pr_products_pictures WHERE id_product = :id_product ORDER BY orderby DESC limit 1", [], "id_product={$id_product}", ['s']);
 
         return $result[0];
     }

@@ -37,9 +37,7 @@ class UsuariosModel
 
         $this->resultPg = $pagination->getResult();
 
-        $this->query['select']->exeSelect("adms_users", 'id,name,email',"LIMIT :limit OFFSET :offset" , "limit={$this->limitResult}&offset={$pagination->getOffset()}");
-
-        $result = $this->query['select']->getResult();
+        $result = $this->query['fullRead']->query("SELECT * FROM adms_users LIMIT :limit OFFSET :offset", [], "limit={$this->limitResult}&offset={$pagination->getOffset()}", ['s']);
 
         return ($result) ? $result : false;
     }
@@ -66,15 +64,10 @@ class UsuariosModel
 
             $this->data['date_expiry'] = date("Y-m-d", strtotime('+ 1 year'));
 
-            $this->query['create']->exeCreate("adms_users", $this->data);
+            $result = $this->query['fullRead']->query("INSERT INTO adms_users :data", $this->data, '', ['i']);
 
-            if($this->query['create']->getResult()){
-                $_SESSION['msg'] = "<p class='alert-success'>Usuário cadastrado com sucesso!</p>";
-                return true;
-            }else{
-                $_SESSION['msg'] = "<p class='alert-danger'>Erro: Usuário não cadastrado com sucesso!</p>";
-                return false;
-            }
+            return ($result) ? true : false;
+
         }
     }
 
@@ -125,38 +118,16 @@ class UsuariosModel
 
         $this->data['modified'] = date("Y-m-d H:i:s");
 
-        $this->data['date_expiry'] = implode("-",array_reverse(explode("/",$this->data['date_expiry'])));
+        $result = $this->query['fullRead']->query("UPDATE adms_users SET :data WHERE id=:id", $this->data, "id={$this->id}", ['u']);
 
-        $this->query['update']->exeUpdate("adms_users", $this->data , "WHERE id=:id" , "id={$this->id}");
-
-        if($this->query['update']->getResult()){
-
-            if($this->id == $_SESSION['user_id'] && isset($image)) $_SESSION['user_image'] = $noVal['image'];
-
-            return true;
-        }else{
-            $_SESSION['msg'] = "<p class='alert-danger'>Erro: Usuário não editado, Tente novamente!</p>";
-            return false;
-        }
+        return ($result) ? true : false;
     }
 
     public function delete($id)
     {
-        $this->query['delete']->delete("adms_users", "WHERE id=:id", "id={$id}");
+        $result = $this->query['fullRead']->query("DELETE FROM adms_users WHERE id=:id", [], "id={$id}", ['d']);
 
-        if($this->query['delete']->getResult()){
-
-            $_SESSION['msg'] = "<p class='alert-success'>Usuario deletado com sucesso!</p>";
-
-            return true;
-
-        }else{
-
-            $_SESSION['msg'] = "<p class='alert-danger'>Erro: Usuario nao deletado, Tente novamente!</p>";
-
-            return false;
-
-        }
+        return ($result) ? true : false;
     }
 
     public function editPassword($password, $id)
@@ -164,32 +135,29 @@ class UsuariosModel
         if($password['password'] !== $password['co_password']){
             $_SESSION['msg'] = "<p class='alert-danger'>Erro:Confirmar Senha deve ser igual a Senha!</p>";
             return false;
-        }else{
-            unset($password['co_password']);
-
-            $this->query['valPassword']->valPassword($password['password']);
-
-            if($this->query['valPassword']->getResult()){
-                $password['password'] = password_hash($password['password'], PASSWORD_DEFAULT);
-
-               $this->query['update']->exeUpdate("adms_users", $password , "WHERE id=:id" , "id={$id}");
-
-                if($this->query['update']->getResult()){
-                    $_SESSION['msg'] = "<p class='alert-success'>Senha editada com sucesso!</p>";
-                    return true;
-                }else{
-                    $_SESSION['msg'] = "<p class='alert-danger'>Erro: Senha nao foi editada, Tente novamente!</p>";
-                    return false;
-                }
-            }else{
-                return false;
-            }
         }
+
+        unset($password['co_password']);
+
+        $this->query['valPassword']->valPassword($password['password']);
+
+        if($this->query['valPassword']->getResult()){
+
+            $password['password'] = password_hash($password['password'], PASSWORD_DEFAULT);
+
+            $result = $this->query['fullRead']->query("UPDATE adms_users SET :data WHERE id = :id", $password , "id={$id}", ['u']);
+
+            return ($result) ? true : false;
+
+        }else{
+            return false;
+        }
+
     }
 
     public function getInfo($id)
     {
-        $this->query['select']->exeSelect("adms_users", '',"WHERE id=:id" , "id={$id}");
+        $this->query['fullRead']->exeSelect("adms_users", '',"WHERE id=:id" , "id={$id}");
 
         $result = $this->query['select']->getResult();
 

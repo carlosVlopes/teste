@@ -16,7 +16,6 @@
 
 ?>
 
-
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav metismenu" id="side-menu">
@@ -29,8 +28,7 @@
                              </span> <span class="text-muted text-xs block">Opções <b class="caret"></b></span> </span> </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
                         <li><a href="<?= URLADM?>user-profile/index">Perfil</a></li>
-                        <li><a href="<?= URLADM?>edit-user/index/<?=$_SESSION['user_id']?>">Configuração</a></li>
-                        <li><a href="<?= URLADM?>user-token/index">Token API</a></li>
+                        <li><a href="<?= URLADM?>configuracao">Configuração</a></li>
                         <li class="divider"></li>
                         <li><a href="<?= URLADM?>logout/index">Logout</a></li>
                     </ul>
@@ -41,7 +39,7 @@
             </li>
             <?php foreach($menus as $menu): ?>
 
-                <?php if($menu['link'] == 'menu'): ?>
+                <?php if(in_array($menu['id'], $submenus['ids'])): ?>
 
                     <li class="<?= ($sidebarActive === $menu['link']) ? 'active' : ''?>">
                         <a href="#"><i class="fa <?=$menu['icon']?>"></i> <span class="nav-label"><?=$menu['title']?></span><span class="fa arrow"></span></a>

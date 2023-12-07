@@ -5,13 +5,7 @@ namespace App\adms\Controllers;
 
 class BannersHomeController
 {
-    private array|string|null $data;
-
-    private string|int|null $page;
-
     private int|null $qnt_records = 10;
-
-    private array|null $dataForm;
 
     public function __construct($model, $sessionPermi){
 
@@ -94,8 +88,8 @@ class BannersHomeController
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-                if($_FILES['image']['error'] == 0){
-                    $this->dataForm['image'] = $_FILES['image'] ? $_FILES['image'] : null;
+                if($_FILES['banner']['error'] == 0){
+                    $this->dataForm['banner'] = $_FILES['banner'] ? $_FILES['banner'] : null;
                 }
 
                 if($this->model->create($this->dataForm, $id)){

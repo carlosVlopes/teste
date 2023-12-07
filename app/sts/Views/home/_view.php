@@ -123,7 +123,7 @@
                     <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                         <div class="product__item">
                             <div class="product__item__pic set-bg" data-setbg="<?= URL ?>app/sts/assets/img/products/<?= $product['image'] ?>">
-                                <?php if($product['status']): ?>
+                                <?php if($product['status'] && $product['status'] != "Normal"): ?>
                                     <span class="label"><?= $product['status'] ?></span>
                                 <?php endIf ?>
                                 <ul class="product__hover">
@@ -160,7 +160,7 @@
                     <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix best-seller">
                         <div class="product__item">
                             <div class="product__item__pic set-bg" data-setbg="<?= URL ?>app/sts/assets/img/products/<?= $product['image'] ?>">
-                                <?php if($product['status']): ?>
+                                <?php if($product['status'] && $product['status'] != "Normal"): ?>
                                     <span class="label"><?= $product['status'] ?></span>
                                 <?php endIf ?>
                                 <ul class="product__hover">

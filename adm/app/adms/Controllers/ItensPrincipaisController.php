@@ -5,13 +5,7 @@ namespace App\adms\Controllers;
 
 class ItensPrincipaisController
 {
-    private array|string|null $data;
-
-    private string|int|null $page;
-
     private int|null $qnt_records = 10;
-
-    private array|null $dataForm;
 
     public function __construct($model, $sessionPermi){
 

@@ -26,9 +26,9 @@
 
 <body>
     <!-- Page Preloder -->
-    <div id="preloder">
+<!--     <div id="preloder">
         <div class="loader"></div>
-    </div>
+    </div> -->
 
     <!-- Offcanvas Menu Begin -->
     <div class="offcanvas-menu-overlay"></div>
@@ -85,18 +85,8 @@
                             <!-- listagem de produtos shop.html-->
                             <li <?= ($this->page == 'loja') ? 'class="active"' : '' ?>><a href="<?= HOME_URI ?>loja">Loja</a></li>
                             <!-- about.html -->
-                            <li <?= ($this->page == 'sobre') ? 'class="active"' : '' ?>><a href="<?= HOME_URI ?>sobre">Sobre nós</a></li>
-                            <!-- depois tirar esse pages -->
-                            <li><a href="#">Pages</a>
-                                <ul class="dropdown">
-                                    <!-- detalhando o produto -->
-                                    <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <!-- carrinho -->
-                                    <li><a href="./shopping-cart.html">Shopping Cart</a></li>
-                                    <!-- comprando -->
-                                    <li><a href="./checkout.html">Check Out</a></li>
-                                </ul>
-                            </li>
+                            <li <?= ($this->page == 'quem-somos') ? 'class="active"' : '' ?>><a href="<?= HOME_URI ?>quem-somos">Sobre nós</a></li>
+
                             <li <?= ($this->page == 'contato') ? 'class="active"' : '' ?>><a href="<?= HOME_URI ?>contato">Contato</a></li>
                         </ul>
                     </nav>
@@ -104,8 +94,8 @@
                 <div class="col-lg-3 col-md-3">
                     <div class="header__nav__option">
                         <a href="#" class="search-switch"><img src="<?= URL ?>app/sts/assets/img/icon/search.png" alt=""></a>
-                        <a href="#"><img src="<?= URL ?>app/sts/assets/img/icon/heart_red.png" alt=""></a>
-                        <a href="#"><img src="<?= URL ?>app/sts/assets/img/icon/cart.png" alt="" style="width: 20px;"> <span class="qnt_products_cart"><strong><?=$this->config_cart_likes['qnt_products']?></strong></span></a>
+                        <a href="<?= HOME_URI ?>itens-curtidos"><img src="<?= URL ?>app/sts/assets/img/icon/heart_red.png" alt=""></a>
+                        <a href="<?= HOME_URI ?>carrinho"><img src="<?= URL ?>app/sts/assets/img/icon/cart.png" alt="" style="width: 20px;"> <span><strong class="qnt_products_cart"><?=$this->config_cart_likes['qnt_products']?></strong></span></a>
                         <div class="price price_cart">R$<?= $this->config_cart_likes['price'] ?></div>
                     </div>
                 </div>

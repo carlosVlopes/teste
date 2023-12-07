@@ -5,7 +5,7 @@ namespace Sts\Controllers;
 class LojaController
 {
     
-    public function __construct($model, $config_cart){
+    public function __construct($model, $config_cart_likes){
 
         $this->model = $model;
 
@@ -17,7 +17,7 @@ class LojaController
 
         $this->configs = $this->model->get_configs();
 
-        $this->products_cart = $config_cart;
+        $this->config_cart_likes = $config_cart_likes;
 
         $this->page = 'loja';
 

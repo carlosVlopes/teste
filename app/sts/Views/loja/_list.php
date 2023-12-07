@@ -156,11 +156,13 @@
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="shop__product__option__right">
-                                    <p>Classificar por preço:</p>
-                                    <select class="filter_price">
-                                        <option value="menor_maior">Baixo para alto</option>
-                                        <option value="maior_menor">Alto para baixo</option>
-                                    </select>
+                                    <form action="" id="classificar">
+                                        <p>Classificar por preço:</p>
+                                        <select name="filter_price" class="filter_price">
+                                            <option value="menor_maior">Baixo para alto</option>
+                                            <option value="maior_menor">Alto para baixo</option>
+                                        </select>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -180,23 +182,29 @@
                                                 <span class="label"><?= $product['status'] ?></span>
                                             <?php endIf ?>
                                             <ul class="product__hover">
-                                                <li><a href="#"><img src="<?= URL ?>app/sts/assets/img/icon/heart.png" alt="Favoritar"></a></li>
+                                                <input type="hidden" class="id_product" value="<?= $product['id_product'] ?>">
+                                                <?php if(in_array($product['id_product'],$this->config_cart_likes['id_products_likes'])): ?>
+                                                    <li><a href="javascript:;"><img src="<?= URL ?>app/sts/assets/img/icon/heart_red.png" alt="Favoritar" class="remove-likes"></a></li>
+                                                <?php else: ?>
+                                                    <li><a href="javascript:;"><img src="<?= URL ?>app/sts/assets/img/icon/heart.png" alt="Favoritar" class="add-likes"></a></li>
+                                                <?php endIf ?>
                                                 <li><a href="produto/<?= $product['id_product'] ?>"><img src="<?= URL ?>app/sts/assets/img/icon/search.png" alt=""></a></li>
                                             </ul>
                                         </div>
                                         <div class="product__item__text">
+                                            <input type="hidden" class="id_product" value="<?= $product['id_product'] ?>">
                                             <h6><?= $product['name'] ?></h6>
-                                            <a href="#" class="add-cart">+ Adicionar ao Carrinho</a>
-                                            <h5><?= $product['price'] ?></h5>
+                                            <a href="javascript:;" class="add-cart">+ Adicionar ao Carrinho</a>
+                                            <h5 class="price_product"><?= $product['price'] ?></h5>
                                             <div class="product__color__select">
-                                                <label for="pc-4">
-                                                    <input type="radio" id="pc-4">
+                                                <label for="pc-1">
+                                                    <input type="radio" id="pc-1">
                                                 </label>
-                                                <label class="active black" for="pc-5">
-                                                    <input type="radio" id="pc-5">
+                                                <label class="active black" for="pc-2">
+                                                    <input type="radio" id="pc-2">
                                                 </label>
-                                                <label class="grey" for="pc-6">
-                                                    <input type="radio" id="pc-6">
+                                                <label class="grey" for="pc-3">
+                                                    <input type="radio" id="pc-3">
                                                 </label>
                                             </div>
                                         </div>
@@ -246,7 +254,7 @@
     <script src="<?= URL ?>app/sts/assets/js/mixitup.min.js"></script>
     <script src="<?= URL ?>app/sts/assets/js/owl.carousel.min.js"></script>
     <script src="<?= URL ?>app/sts/assets/js/main.js"></script>
-    <!-- <script src="<?= URL ?>app/sts/assets/js/pages/loja/loja.js"></script> -->
+    <script src="<?= URL ?>app/sts/assets/js/pages/loja/loja.js"></script>
 </body>
 
 </html>

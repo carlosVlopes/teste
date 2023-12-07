@@ -9,4 +9,9 @@ $(function() {
             user: "required"
         }
     })
+
+    $(".select2").select2({
+
+    });
+
 });

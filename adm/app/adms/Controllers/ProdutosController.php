@@ -2,20 +2,9 @@
 
 namespace App\adms\Controllers;
 
-/**
- * Controller da página listar usuarios
- * @author Cesar <cesar@celke.com.br>
- */
 class ProdutosController
 {
-    /** @var array|string|null $data Recebe os dados que devem ser enviados para VIEW */
-    private array|string|null $data;
-
-    private string|int|null $page;
-
-    private int|null $qnt_records = 10;
-
-    private array|null $dataForm;
+    private $qnt_records = 10;
 
     public function __construct($model, $sessionPermi){
 
@@ -120,7 +109,7 @@ class ProdutosController
 
             if($this->model->create($this->dataForm, $id)){
 
-               $success = true;
+                $success = true;
 
             }
         }else{

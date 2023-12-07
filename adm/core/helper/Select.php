@@ -35,6 +35,14 @@ class Select extends Conn
         }else{
             $this->select = "SELECT * FROM {$table} {$terms}";
         }
+
+        // if($table == 'pr_products'){
+
+        //     echo '<pre>';
+        //     print_r($this->select);
+        //     echo '</pre>'; exit;
+        // }
+
         $this->exeInstruction($values);
 
     }

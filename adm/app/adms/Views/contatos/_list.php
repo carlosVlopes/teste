@@ -9,7 +9,6 @@
 		                <h5>Lista de Contatos</h5>
 		                <div class="ibox-tools">
 							<a href="<?= $this->deleteAllContacts?>" class="btn btn-danger btn-m" onclick="return confirm('Deseja excluir todos os registros?')"><i class="fa fa-trash-o"></i> Excluir todos os registros</a>
-							<a href="<?=$this->pageAdd?>" class="btn btn-primary btn-m">Cadastrar</a>
 		                </div>
 		            </div>
 		            <div class="ibox-content notification" style="display: none;">
@@ -30,7 +29,7 @@
 			                    <tbody>
 	    							<?php foreach ($data as $contact): ?>
 					                    <tr class="gradeX">
-					                        <td><?= $contact['date_contact'] ?></td>
+					                        <td><?= implode("/",array_reverse(explode("-",$contact['date_contact']))) ?></td>
 					                        <td><?= $contact['name'] ?></td>
 					                        <td><?= $contact['email'] ?></td>
 					                        <td>

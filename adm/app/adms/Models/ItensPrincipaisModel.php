@@ -39,7 +39,7 @@ class ItensPrincipaisModel
 
         $this->resultPg = $pagination->getResult();
 
-        $result = $this->query['fullRead']->fullRead("SELECT * FROM hm_main_items ORDER BY orderby LIMIT :limit OFFSET :offset", "limit={$this->limitResult}&offset={$pagination->getOffset()}");
+        $result = $this->query['fullRead']->query("SELECT * FROM hm_main_items ORDER BY orderby LIMIT :limit OFFSET :offset", [], "limit={$this->limitResult}&offset={$pagination->getOffset()}", ['s']);
 
         return ($result) ? $result : false;
     }
@@ -81,27 +81,17 @@ class ItensPrincipaisModel
 
         if(!$id){ // caso for insert
 
-            $this->query['create']->exeCreate("hm_main_items", $this->data);
+            $result = $this->query['fullRead']->query("INSERT INTO hm_main_items :data", $this->data, '', ['i']);
 
-            if($this->query['create']->getResult()){
-                return true;
-            }else{
-                return false;
-            }
+            return ($result) ? true : false;
+
 
         }else{ // caso for editar
 
-            $this->query['update']->exeUpdate("hm_main_items", $this->data, 'WHERE id_item = :id_item', "id_item={$id}");
+            $result = $this->query['fullRead']->query("UPDATE hm_main_items SET :data WHERE id_item = :id_item", $this->data, "id_item={$id}", ['u']);
 
-            if($this->query['update']->getResult()){
+            return ($result) ? true : false;
 
-                return true;
-
-            }else{
-
-                return false;
-
-            }
         }
 
     }
@@ -109,15 +99,15 @@ class ItensPrincipaisModel
     public function delete($id)
     {
 
-        $this->query['delete']->delete('hm_main_items', "WHERE id_item=:id_item", "id_item={$id}");
+        $result = $this->query['fullRead']->query("DELETE FROM hm_main_items WHERE id_item=:id_item", [], "id_item={$id}", ['d']);
 
-        return $this->query['delete']->getResult();
+        return ($result) ? true : false;
     }
 
     public function getInfo($id)
     {
 
-        $result = $this->query['fullRead']->fullRead("SELECT * FROM hm_main_items WHERE id_item = :id_item","id_item={$id}");
+        $result = $this->query['fullRead']->query("SELECT * FROM hm_main_items WHERE id_item = :id_item", [], "id_item={$id}", ['s']);
 
         return $result[0];
 
@@ -130,9 +120,7 @@ class ItensPrincipaisModel
 
         unset($data['id']);
 
-        $this->query['update']->exeUpdate("hm_main_items", $data,"WHERE id_item = :id_item", "id_item={$id}");
-
-        $result = $this->query['update']->getResult();
+        $result = $this->query['fullRead']->query("UPDATE hm_main_items SET :data WHERE id_item = :id_item", $data, "id_item={$id}", ['u']);
 
         return ($result) ? ['status' => 'success', 'orderby' => $data['orderby']] : '';
     }
@@ -140,7 +128,7 @@ class ItensPrincipaisModel
     public function get_collections()
     {
 
-        $result = $this->query['fullRead']->fullRead("SELECT * FROM pr_collections");
+        $result = $this->query['fullRead']->query("SELECT * FROM pr_collections", [], '', ['s']);
 
         return $result;
 
@@ -149,7 +137,7 @@ class ItensPrincipaisModel
     public function get_categories()
     {
 
-        $result = $this->query['fullRead']->fullRead("SELECT * FROM pr_categories ORDER BY orderby ASC");
+        $result = $this->query['fullRead']->query("SELECT * FROM pr_categories ORDER BY orderby ASC", [], '', ['s']);
 
         return $result;
 

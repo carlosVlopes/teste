@@ -14,24 +14,28 @@ class ConstructJson{
 
 	    if($register) $data['m_dashboard'] = 'Ativo';
 
-	    foreach(array_keys($data) as $key => $value){
+	    foreach($data['permissions'] as $value){
 
 	        if(strpos($value, 'u_') === 0){
-
-	            unset($data[$value]);
 
 	            $permissions_users .= '"' . $value . '":"' . "Ativo" . '",';
 
 	        }
 
-	        if(strpos($value, 'm_') === 0){
+	    }
 
-	            unset($data[$value]);
+	    foreach($data['menus'] as $value){
+
+	    	if(strpos($value, 'm_') === 0){
 
 	            $permissions_menus .= '"' . $value . '":"' . "Ativo" . '",';
 
 	        }
+
 	    }
+
+	    unset($data['permissions']);
+	    unset($data['menus']);
 
 	    $data['permissions_users'] = self::constructJson($permissions_users);
 	    $data['permissions_menus'] = self::constructJson($permissions_menus);

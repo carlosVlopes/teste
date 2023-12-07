@@ -4,15 +4,7 @@ namespace Core;
 
 use Core\helper\AdmsSlug;
 
-/**
- * Recebe a URL e manipula
- * Carregar a CONTROLLER
- * @author Cesar <cesar@celke.com.br>
- * 
- * https://www.php-fig.org/psr/
- * https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md
- * https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc-tags.md
- */
+
 class ConfigController extends Config
 {
 

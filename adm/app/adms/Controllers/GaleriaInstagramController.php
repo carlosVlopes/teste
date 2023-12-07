@@ -5,9 +5,6 @@ namespace App\adms\Controllers;
 
 class GaleriaInstagramController
 {
-
-    private array|string|null $data;
-
     public function __construct($model, $sessionPermi){
 
         $this->model = $model;

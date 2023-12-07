@@ -16,9 +16,7 @@ class LoginModel
     public function get_user()
     {
 
-        $data = $this->query['fullRead']->fullRead("SELECT * FROM site_users", '');
-
-        return $data[0];
+        return $this->query['fullRead']->query("SELECT * FROM site_users", [], '', ['s'])[0];
 
     }
 

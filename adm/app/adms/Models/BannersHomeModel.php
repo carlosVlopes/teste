@@ -39,7 +39,7 @@ class BannersHomeModel
 
         $this->resultPg = $pagination->getResult();
 
-        $result = $this->query['fullRead']->fullRead("SELECT * FROM hm_banners ORDER BY orderby LIMIT :limit OFFSET :offset", "limit={$this->limitResult}&offset={$pagination->getOffset()}");
+        $result = $this->query['fullRead']->query("SELECT * FROM hm_banners ORDER BY orderby LIMIT :limit OFFSET :offset", [],"limit={$this->limitResult}&offset={$pagination->getOffset()}", ['s']);
 
         return ($result) ? $result : false;
     }
@@ -83,27 +83,16 @@ class BannersHomeModel
 
             $this->data['status'] = "Ativo";
 
-            $this->query['create']->exeCreate("hm_banners", $this->data);
+            $result = $this->query['fullRead']->query("INSERT INTO hm_banners :data", $this->data, '', ['i']);
 
-            if($this->query['create']->getResult()){
-                return true;
-            }else{
-                return false;
-            }
+            return ($result) ? true : false;
 
         }else{ // caso for editar
 
-            $this->query['update']->exeUpdate("hm_banners", $this->data, 'WHERE id_banner = :id_banner', "id_banner={$id}");
+            $result = $this->query['fullRead']->query("UPDATE hm_banners SET :data WHERE id_banner = :id_banner", $this->data, "id_banner={$id}", ['u']);
 
-            if($this->query['update']->getResult()){
+            return ($result) ? true : false;
 
-                return true;
-
-            }else{
-
-                return false;
-
-            }
         }
 
     }
@@ -111,15 +100,15 @@ class BannersHomeModel
     public function delete($id)
     {
 
-        $this->query['delete']->delete('hm_banners', "WHERE id_banner=:id_banner", "id_banner={$id}");
+        $result = $this->query['fullRead']->query("DELETE FROM hm_banners WHERE id_banner = :id_banner", [], "id_banner={$id}", ['d']);
 
-        return $this->query['delete']->getResult();
+        return ($result) ? true : false;
     }
 
     public function getInfo($id)
     {
 
-        $result = $this->query['fullRead']->fullRead("SELECT * FROM hm_banners WHERE id_banner = :id_banner","id_banner={$id}");
+        $result = $this->query['fullRead']->query("SELECT * FROM hm_banners WHERE id_banner = :id_banner", [], "id_banner={$id}", ['s']);
 
         return $result[0];
 
@@ -132,9 +121,7 @@ class BannersHomeModel
 
         unset($data['id']);
 
-        $this->query['update']->exeUpdate("hm_banners", $data,"WHERE id_banner = :id_banner", "id_banner={$id}");
-
-        $result = $this->query['update']->getResult();
+        $result = $this->query['fullRead']->query("UPDATE hm_banners SET :data WHERE id_banner = :id_banner", $data, "id_banner={$id}", ['u']);
 
         return ($result) ? ['status' => 'success', 'orderby' => $data['orderby']] : '';
     }
@@ -145,9 +132,7 @@ class BannersHomeModel
 
         unset($data['id']);
 
-        $this->query['update']->exeUpdate("hm_banners", $data, "WHERE id_banner = :id_banner", "id_banner={$id}");
-
-        $result = $this->query['update']->getResult();
+        $result = $this->query['fullRead']->query("UPDATE hm_banners SET :data WHERE id_banner = :id_banner", $data, "id_banner={$id}", ['u']);
 
         return ($result) ? ['status' => 'success', 'statusBanner' => $data['status']] : ['status' => 'error'];
     }
@@ -155,7 +140,7 @@ class BannersHomeModel
     public function get_collections()
     {
 
-        $result = $this->query['fullRead']->fullRead("SELECT * FROM pr_collections");
+        $result = $this->query['fullRead']->query("SELECT * FROM pr_collections", [], '', ['s']);
 
         return $result;
 

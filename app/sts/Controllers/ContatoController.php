@@ -9,7 +9,7 @@ class ContatoController
 
         $this->model = $model;
 
-        $this->products_cart = $config_cart;
+        $this->config_cart_likes = $config_cart;
 
         $this->page = 'contato';
 

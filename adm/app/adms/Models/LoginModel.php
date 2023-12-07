@@ -17,9 +17,7 @@ class LoginModel
     {
         $this->data = $data;
 
-        $this->query['select']->exeSelect("adms_users", '',"WHERE user = :user OR email =:email LIMIT :limit" , "user={$this->data['user']}&email={$this->data['user']}&limit=1");
-
-        $this->resultBd =  $this->query['select']->getResult();
+        $this->resultBd = $this->query['fullRead']->query("SELECT * FROM adms_users WHERE user = :user OR email =:email LIMIT :limit", [], "user={$this->data['user']}&email={$this->data['user']}&limit=1", ['s']);
 
         if($this->resultBd){
             if($this->valPassword()) return true;

@@ -5,60 +5,96 @@ namespace Core\helper;
 use PDO;
 use PDOException;
 
-/**
- * Classe genérica para selecionar registro no banco de dados
- *
- * @author Celke
- */
 class Read extends Conn
 {
-    /** @var string $select Recebe o QUERY */
     private string $select;
 
-    /** @var array $values Recebe os valores que deve ser atribuidos nos link da QUERY com bindValue */
-    private array $values = [];
+    private $values = [];
 
-    /** @var object $query Recebe a QUERY preparada */
-    private object $query;
+    private $query;
 
-    /** @var object $conn Recebe a conexao com BD */
     private object $conn;
 
-    /** 
-     * Recebe os valores para montar a QUERY.
-     * Converte a parseString de string para array.
-     * @param string $table Recebe o nome da tabela do banco de dados
-     * @param string $terms Recebe os links da QUERY, ex: sts_situation_id =:sts_situation_id
-     * @param string $parseString Recebe o valores que devem ser subtituidos no link, ex: sts_situation_id=1
-     * 
-     * @return void
-     */
-    public function exeRead(string $table, string|null $terms = null, string|null $parseString = null): void
-    {
-        if (!empty($parseString)) {
-            parse_str($parseString, $this->values);
-        }
-
-        $this->select = "SELECT * FROM {$table} {$terms}";
-        $this->exeInstruction();
-    }
-
     /**
-     * Recebe os valores para montar a QUERY.
-     * Converte a parseString de string para array.
-     * @param string $query Recebe a QUERY da Models
+     * QUERYS:
+     * INSERT INTO :data
+     * UPDATE table SET :data
+     * DELETE FROM table
+     * SELECT * FROM table
+     * @param string $query Recebe a QUERY da Models.
+     * @param array  $data Array de dados caso a query for insert | update.
      * @param string $parseString Recebe o valores que devem ser subtituidos no link, ex: sts_situation_id=1
+     * @param array  $type Array com um valor | ['i'] | ['u'] | ['d'] | ['s']
      * 
-     * @return void
+     *
      */
-    public function fullRead(string $query, string|null $parseString = null)
+    public function query(string $query, $data, $parseString = null, $type = null)
     {
         $this->select = $query;
-        if (!empty($parseString)) {
-            parse_str($parseString, $this->values);
+
+        $this->values = $parseString;
+
+        $this->data = $data;
+
+        $this->type = $type[0];
+
+        if($this->type == 'u'){
+
+            if (!empty($parseString)) {
+                parse_str($parseString, $this->values);
+            }
+
+            return $this->exeReplaceValuesUpdate();
+
         }
+
+        if($this->type == 'i'){
+
+            $this->values = $data;
+
+            return $this->exeReplaceValuesInsert();
+
+        }
+
+        if($this->type == 's' || $this->type == 'd'){
+
+            if (!empty($parseString)) {
+                parse_str($parseString, $this->values);
+            }
+
+            return $this->exeInstruction();
+
+        }
+    }
+
+    private function exeReplaceValuesUpdate()
+    {
+        foreach ($this->data as $key => $value){
+            $values[] = $key . "=:" . $key;
+        }
+
+        $values = implode(", ", $values);
+
+        $a = explode(':data', $this->select);
+
+        $this->select = "{$a[0]}{$values}{$a[1]}";
+
         return $this->exeInstruction();
     }
+
+    private function exeReplaceValuesInsert()
+    {
+        $coluns = implode(',', array_keys($this->values));
+
+        $values = ':' . implode(', :', array_keys($this->values));
+
+        $a = explode(':data', $this->select);
+
+        $this->select = "{$a[0]}($coluns) VALUES ($values)";
+
+        return $this->exeInstruction();
+    }
+
 
     /**
      * Executa a QUERY. 
@@ -70,9 +106,31 @@ class Read extends Conn
     {
         $this->connection();
         try {
-            $this->exeParameter();
-            $this->query->execute();
-            return $this->query->fetchAll();
+
+            if($this->type == 's' || $this->type == 'd'){
+
+                $this->exeParameter();
+
+                $this->query->execute();
+
+                return ($this->type == 's') ? $this->query->fetchAll() : true ;
+            }
+
+            if($this->type == 'i'){
+                $this->query->execute($this->values);
+
+                return $this->conn->lastInsertId();
+
+            }
+
+            if($this->type == 'u'){
+
+                $this->query->execute(array_merge($this->data, $this->values));
+
+                return true;
+
+            }
+
         } catch (PDOException $err) {
             return null;
         }
@@ -87,8 +145,10 @@ class Read extends Conn
     private function connection(): void
     {
         $this->conn = $this->connectDb();
+
         $this->query = $this->conn->prepare($this->select);
-        $this->query->setFetchMode(PDO::FETCH_ASSOC);
+
+        if($this->type != 'i') $this->query->setFetchMode(PDO::FETCH_ASSOC);
     }
 
     /**

@@ -32,7 +32,7 @@
                                     <span class="col-lg-7" id="msg"></span>
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <form role="form" method="POST" action="" class="form-adm" enctype="multipart/form-data">
+                                            <form role="form" method="POST" action="" class="form-adm-edit" enctype="multipart/form-data">
                                                 <div class="form-group col-lg-11">
                                                     <label>Titulo</label>
                                                     <input type="text" class="form-control" name="title" id="title" value="<?=$data['title']?>">

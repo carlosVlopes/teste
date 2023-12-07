@@ -18,9 +18,7 @@ $(function(){
                 success: function(data) {
                     if(data.status == 'success')
                     {
-
                         form.hide();
-
                     }
                     else
                     {

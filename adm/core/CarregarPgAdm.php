@@ -103,7 +103,7 @@ class CarregarPgAdm
         }
 
         // classes de querys usadas no model
-        $querys = ['select' => new helper\Select(), 'fullRead' => new helper\Read() , 'delete' => new helper\Delete() , 'create' => new helper\Create(), 'update' => new helper\Update(), 'constructJson' => new helper\ConstructJson(), 'valPassword' => new helper\ValPassword(), 'valField' => new helper\ValField(), 'upload' => new helper\Upload(),'valPermissions' => new helper\ValPermissions()];
+        $querys = ['fullRead' => new helper\Read() , 'constructJson' => new helper\ConstructJson(), 'valPassword' => new helper\ValPassword(), 'valField' => new helper\ValField(), 'upload' => new helper\Upload(),'valPermissions' => new helper\ValPermissions()];
 
         $model = new $model($querys);
 
@@ -154,9 +154,7 @@ class CarregarPgAdm
 
     private function checkMenusPermi($querys, $activeMenus)
     {
-        $querys['select']->exeSelect("cn_menus", '', 'ORDER BY orderby', '');
-
-        $menus = $querys['select']->getResult();
+        $menus = $querys['fullRead']->query("SELECT * FROM cn_menus ORDER BY orderby ASC", [], '', ['s']);
 
         $linksMenus = [];
 
@@ -200,30 +198,7 @@ class CarregarPgAdm
         if (in_array($this->urlController, $this->listPgPublic)) {
             $this->classLoad = "\\App\\adms\\Controllers\\" . $this->urlController . 'Controller';
         } else {
-            $this->pgPrivate();
-        }
-    }
-    /**
-     * Verificar se a página é privada e chamar o método para verificar se o usuário está logado
-     *
-     * @return void
-     */
-    private function pgPrivate():void
-    {
-        $this->listPgPrivate = ["Dashboard", "Usuarios", "ViewUser", "AddUser", "EditUser", "UserProfile", "UserToken", "Produtos", "ProdutosGaleria", "Categorias", "BannersHome", "ItensPrincipais", "GaleriaInstagram", "Marcas", "Contatos"];
-        if(in_array($this->urlController, $this->listPgPrivate)){
             $this->verifyLogin();
-        }else{
-
-            if($this->urlController != "App"){
-
-                $_SESSION['msg'] = "<p class='alert-danger'>Erro: Página não encontrada! {$this->urlController}</p>";
-                $urlRedirect = URLADM . "erro/index";
-                header("Location: $urlRedirect");
-            }
-
-            exit;
-
         }
     }
 

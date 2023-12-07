@@ -37,9 +37,7 @@ class MarcasModel
 
         $this->resultPg = $pagination->getResult();
 
-        $this->query['select']->exeSelect("pr_brands", "","LIMIT :limit OFFSET :offset" , "limit={$this->limitResult}&offset={$pagination->getOffset()}");
-
-        $result = $this->query['select']->getResult();
+        $result = $this->query['fullRead']->query("SELECT * FROM pr_brands LIMIT :limit OFFSET :offset", [], "limit={$this->limitResult}&offset={$pagination->getOffset()}", ['s']);
 
         return ($result) ? $result : false;
     }
@@ -48,9 +46,7 @@ class MarcasModel
     {
         $this->data = $data;
 
-        $this->query['create']->exeCreate("pr_brands", $this->data);
-
-        $result = $this->query['create']->getResult();
+        $result = $this->query['fullRead']->query("INSERT INTO pr_brands :data", $this->data, '', ['i']);
 
         return ($result) ? true : false;
 
@@ -63,9 +59,7 @@ class MarcasModel
 
         unset($data['id']);
 
-        $this->query['update']->exeUpdate("pr_brands", $data, "WHERE id_brand=:id_brand", "id_brand={$id}");
-
-        $result = $this->query['update']->getResult();
+        $result = $this->query['fullRead']->query("UPDATE pr_brands SET :data WHERE id_brand=:id_brand", $data, "id_brand={$id}", ['u']);
 
         return ($result) ? ['status' => 'success'] : ['status' => 'error'];
     }
@@ -73,9 +67,7 @@ class MarcasModel
 
     public function delete($id)
     {
-        $this->query['delete']->delete('pr_brands', "WHERE id_brand=:id_brand", "id_brand={$id['id']}");
-
-        $result = $this->query['delete']->getResult();
+        $result = $this->query['fullRead']->query("DELETE FROM pr_brands WHERE id_brand=:id_brand", [], "id_brand={$id['id']}", ['d']);
 
         return ($result) ? ['status' => 'success'] : ['status' => 'error'];
     }

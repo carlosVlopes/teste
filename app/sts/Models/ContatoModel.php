@@ -14,11 +14,12 @@ class ContatoModel
 
     public function saveContact(array $data)
     {
-        $this->query['create']->exeCreate("ct_contacts", $data);
+        $data['date_contact'] = date('Y-m-d');
 
-        if (!$this->query['create']->getResult()) return ['status' => 'error'];
+        $result = $this->query['fullRead']->query("INSERT INTO ct_contacts :data", $data, '', ['i']);
 
-        return ['status' => 'success'];
+        return ($result) ? ['status' => 'success'] : ['status' => 'error'];
+
     }
 
 }

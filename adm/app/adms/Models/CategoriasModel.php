@@ -37,9 +37,7 @@ class CategoriasModel
 
         $this->resultPg = $pagination->getResult();
 
-        $this->query['select']->exeSelect("pr_categories", "","LIMIT :limit OFFSET :offset" , "limit={$this->limitResult}&offset={$pagination->getOffset()}");
-
-        $result = $this->query['select']->getResult();
+        $result = $this->query['fullRead']->query("SELECT * FROM pr_categories LIMIT :limit OFFSET :offset", [], "limit={$this->limitResult}&offset={$pagination->getOffset()}", ['s']);
 
         return ($result) ? $result : false;
     }
@@ -48,9 +46,7 @@ class CategoriasModel
     {
         $this->data = $data;
 
-        $this->query['create']->exeCreate("pr_categories", $this->data);
-
-        $result = $this->query['create']->getResult();
+        $result = $this->query['fullRead']->query("INSERT INTO pr_categories :data", $this->data, '', ['i']);
 
         return ($result) ? true : false;
 
@@ -63,9 +59,7 @@ class CategoriasModel
 
         unset($data['id']);
 
-        $this->query['update']->exeUpdate("pr_categories", $data, "WHERE id_category=:id_category", "id_category={$id}");
-
-        $result = $this->query['update']->getResult();
+        $result = $this->query['fullRead']->query("UPDATE pr_categories SET :data WHERE id_category=:id_category", $data, "id_category={$id}", ['u']);
 
         return ($result) ? ['status' => 'success'] : ['status' => 'error'];
     }
@@ -73,9 +67,7 @@ class CategoriasModel
 
     public function delete($id)
     {
-        $this->query['delete']->delete('pr_categories', "WHERE id_category=:id_category", "id_category={$id['id']}");
-
-        $result = $this->query['delete']->getResult();
+        $result = $this->query['fullRead']->query("DELETE FROM pr_categories WHERE id_category = :id_category", [], "id_category={$id['id']}", ['d']);
 
         return ($result) ? ['status' => 'success'] : ['status' => 'error'];
     }

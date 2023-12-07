@@ -37,27 +37,21 @@ class ContatosModel
 
         $this->resultPg = $pagination->getResult();
 
-        $this->query['select']->exeSelect("ct_contacts", "","LIMIT :limit OFFSET :offset" , "limit={$this->limitResult}&offset={$pagination->getOffset()}");
-
-        $result = $this->query['select']->getResult();
+        $result = $this->query['fullRead']->query("SELECT * FROM ct_contacts LIMIT :limit OFFSET :offset", [], "limit={$this->limitResult}&offset={$pagination->getOffset()}", ['s']);
 
         return ($result) ? $result : false;
     }
 
     public function delete($id)
     {
-        $this->query['delete']->delete('ct_contacts', "WHERE id_contact=:id_contact", "id_contact={$id}");
-
-        $result = $this->query['delete']->getResult();
+        $result = $this->query['fullRead']->query("DELETE FROM ct_contacts WHERE id_contact=:id_contact", [], "id_contact={$id}", ['d']);
 
         return ($result) ? true : false;
     }
 
     public function deleteAll()
     {
-        $this->query['delete']->delete('ct_contacts', "", "");
-
-        $result = $this->query['delete']->getResult();
+        $result = $this->query['fullRead']->query("DELETE FROM ct_contacts", [], "", ['d']);
 
         return ($result) ? true : false;
     }
@@ -65,7 +59,7 @@ class ContatosModel
     public function getInfo($id)
     {
 
-        $result = $this->query['fullRead']->fullRead("SELECT * FROM ct_contacts WHERE id_contact = :id_contact", "id_contact={$id}");
+        $result = $this->query['fullRead']->query("SELECT * FROM ct_contacts WHERE id_contact = :id_contact", [], "id_contact={$id}", ['s']);
 
         return ($result) ? ['date_contact' => $result[0], 'status' => 'success'] : ['status' => 'error'];
 

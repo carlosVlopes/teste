@@ -22,11 +22,11 @@ class LoginController
 
         $user = $this->model->get_user();
 
-        $_SESSION['user_id'] = $user['id_user'];
+        $_SESSION['site_user_id'] = $user['id_user'];
 
-        $_SESSION['user_name'] = $user['name'];
+        $_SESSION['site_user_name'] = $user['name'];
 
-        $_SESSION['user_email'] = $user['email'];
+        $_SESSION['site_user_email'] = $user['email'];
 
     }
 }

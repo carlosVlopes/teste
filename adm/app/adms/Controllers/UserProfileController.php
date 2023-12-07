@@ -2,13 +2,8 @@
 
 namespace App\adms\Controllers;
 
-/**
- * Controller da página visualizar usuarios
- * @author Cesar <cesar@celke.com.br>
- */
 class UserProfileController
 {
-    /** @var array|string|null $data Recebe os dados que devem ser enviados para VIEW */
     private array|string|null $data;
 
     private int|string|null $id;
