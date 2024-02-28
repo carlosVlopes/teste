@@ -3,15 +3,37 @@ $(function(){
 	$('.form_checkout').validate({
 	      rules: {
 	            first_name: "required",
-	            last_name: "required",
-	            cep: "required",
-	            address: "required",
-	            number_address: "required",
-	            bairro: "required",
-	            state: "required",
-	            city: "required",
-	            phone: "required",
-	            email: "required",
+	      },
+	      submitHandler: function(form){
+
+	            var request = new XMLHttpRequest();
+
+	            request.open('POST', 'checkout/teste', true);
+
+	            var formData = new FormData(form);
+
+	            request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+	            request.onload = function()
+	            {
+	                if (request.status >= 200 && request.status < 400)
+	                {
+	                    let data = JSON.parse(request.responseText);
+
+	                    if(data.status == 'success')
+	                    {
+
+	                    }else{
+	                    }
+
+	                }
+	            };
+
+	            request.onerror = function(a)
+	            {
+	            };
+
+	            request.send(formData);
 	      }
     	})
 

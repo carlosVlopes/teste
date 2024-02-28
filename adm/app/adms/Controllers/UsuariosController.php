@@ -40,9 +40,7 @@ class UsuariosController
 
         $this->dataForm = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-        if(!empty($this->dataForm['btn_records'])){
-            $this->qnt_records = $this->dataForm['qnt_records'];
-        }
+        if(!empty($this->dataForm['btn_records'])) $this->qnt_records = $this->dataForm['qnt_records'];
 
         if(!empty($this->dataForm['search_name'])){
 
@@ -115,9 +113,7 @@ class UsuariosController
 
                 if(!empty($this->dataForm['SendEditUser'])){
 
-                    if($_FILES['image']['error'] == 0){
-                        $this->dataForm['image'] = $_FILES['image'] ? $_FILES['image'] : null;
-                    }
+                    if($_FILES['image']['error'] == 0) $this->dataForm['image'] = $_FILES['image'] ? $_FILES['image'] : null;
 
                     unset($this->dataForm['SendEditUser']);
 

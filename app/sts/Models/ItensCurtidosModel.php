@@ -7,19 +7,20 @@ class ItensCurtidosModel
 
     public function __construct($query)
     {
-
         $this->query = $query;
+
+        $this->db = $query['fullRead'];
 
     }
 
     public function get_products($id_user)
     {
 
-        $data = $this->query['fullRead']->query("SELECT pr.*
+        $data = $this->db->query("SELECT pr.*
                                                     FROM lk_likes_association AS lk
                                                     INNER JOIN pr_products AS pr
                                                     ON lk.id_product = pr.id_product
-                                                    WHERE id_user = :id_user", [], "id_user={$id_user}", ['s']);
+                                                    WHERE id_user = :id_user", [], "id_user={$id_user}", 's');
 
         return $data;
 
@@ -32,7 +33,7 @@ class ItensCurtidosModel
 
         $data['id_product'] = $id_product;
 
-        $result = $this->query['fullRead']->query("INSERT INTO lk_likes_association :data", $data, '', ['i']);
+        $result = $this->db->query("INSERT INTO lk_likes_association :data", $data, '', 'i');
 
         return ($result) ? ['status' => 'success'] : ['status' => 'error'];
 
@@ -42,7 +43,7 @@ class ItensCurtidosModel
     {
         $id_user = $_SESSION['site_user_id'];
 
-        $result = $this->query['fullRead']->query("DELETE FROM lk_likes_association WHERE id_product = :id_product AND id_user = :id_user", [], "id_product={$id_product}&id_user={$id_user}", ['d']);
+        $result = $this->db->query("DELETE FROM lk_likes_association WHERE id_product = :id_product AND id_user = :id_user", [], "id_product={$id_product}&id_user={$id_user}", 'd');
 
         return ($result) ? ['status' => 'success'] : ['status' => 'error'];
 

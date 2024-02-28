@@ -157,9 +157,7 @@ class UsuariosModel
 
     public function getInfo($id)
     {
-        $this->query['fullRead']->exeSelect("adms_users", '',"WHERE id=:id" , "id={$id}");
-
-        $result = $this->query['select']->getResult();
+        $result = $this->query['fullRead']->query("SELECT * FROM adms_users WHERE id = :id", [], "id={$id}", ['s']);
 
         return $result[0];
     }
@@ -176,9 +174,9 @@ class UsuariosModel
 
     public function getMenus()
     {
-        $this->query['select']->exeSelect("cn_menus", '', 'ORDER BY orderby', '');
+        $result = $this->query['fullRead']->query("SELECT * from cn_menus ORDER BY orderby ASC", [], [], ['s']);
 
-        return $this->query['select']->getResult();
+        return $result;
     }
 
     private function vfEmailUser($email, $user, $id = null) :bool
@@ -187,9 +185,7 @@ class UsuariosModel
 
         if(!$id) $query = "WHERE email = :email";
 
-        $this->query['select']->exeSelect("adms_users", 'email,user',$query , "email={$email}&user={$user}&id={$id}");
-
-        $v = $this->query['select']->getResult();
+        $v = $this->query['fullRead']->query("SELECT * FROM adms_users {$query}", [], "email={$email}&user={$user}&id={$id}", ['s']);
 
         if($v){
             if($v[0]['user'] === $user){

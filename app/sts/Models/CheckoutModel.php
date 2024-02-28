@@ -21,7 +21,7 @@ class CheckoutModel
                                                         ON cr.id_product = pr.id_product
                                                         WHERE cr.id_user = :id_user
                                                         GROUP BY NAME, size
-                                                        ORDER BY NAME ASC", [], "id_user={$id_user}", ['s']);
+                                                        ORDER BY NAME ASC", [], "id_user={$id_user}", 's');
 
         $total_price_cart = 0;
 
@@ -55,7 +55,7 @@ class CheckoutModel
     public function get_cart($id_user)
     {
 
-        return $this->query['fullRead']->query("SELECT * FROM cr_cart WHERE id_user = :id", [], "id={$id_user}", ['s'])[0];
+        return $this->query['fullRead']->query("SELECT * FROM cr_cart WHERE id_user = :id", [], "id={$id_user}", 's')[0];
 
     }
 

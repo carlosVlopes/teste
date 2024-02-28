@@ -28,7 +28,7 @@ class Read extends Conn
      *
      *
      */
-    public function query(string $query, $data, $parseString = null, $type = null)
+    public function query(string $query, $data, $parseString = null, string $type = null)
     {
         $this->select = $query;
 
@@ -36,7 +36,7 @@ class Read extends Conn
 
         $this->data = $data;
 
-        $this->type = $type[0];
+        $this->type = $type;
 
         if($this->type == 'u'){
 

@@ -7,8 +7,9 @@ class LoginModel
 
     public function __construct($query)
     {
-
         $this->query = $query;
+
+        $this->db = $query['fullRead'];
 
     }
 
@@ -16,7 +17,7 @@ class LoginModel
     public function get_user()
     {
 
-        return $this->query['fullRead']->query("SELECT * FROM site_users", [], '', ['s'])[0];
+        return $this->query['fullRead']->query("SELECT * FROM site_users", [], '', 's')[0];
 
     }
 

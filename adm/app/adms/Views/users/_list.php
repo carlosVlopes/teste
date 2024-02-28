@@ -24,7 +24,6 @@
 				            		<form action="" method="POST">
 				            			<input type="text" class="form-control input-sm m-b-xs" id="search_name" name="search_name" placeholder="Buscar usuario">
 				            		</form>
-
 					                <table class="footable table table-bordered table-hover dataTables-example">
 					                    <thead>
 						                    <tr>

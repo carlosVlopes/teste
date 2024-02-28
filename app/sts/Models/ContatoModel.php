@@ -16,7 +16,7 @@ class ContatoModel
     {
         $data['date_contact'] = date('Y-m-d');
 
-        $result = $this->query['fullRead']->query("INSERT INTO ct_contacts :data", $data, '', ['i']);
+        $result = $this->query['fullRead']->query("INSERT INTO ct_contacts :data", $data, '', 'i');
 
         return ($result) ? ['status' => 'success'] : ['status' => 'error'];
 

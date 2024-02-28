@@ -173,13 +173,13 @@ class ConfigController extends Config
 
         $fullRead = new helper\Read();
 
-        $itens_likes = $fullRead->fullRead("SELECT id_product FROM lk_likes_association WHERE id_user = :id_user", "id_user={$id_user}");
+        $itens_likes = $fullRead->query("SELECT id_product FROM lk_likes_association WHERE id_user = :id_user", [], "id_user={$id_user}", 's');
 
-        $a = $fullRead->fullRead("SELECT pr.price
+        $a = $fullRead->query("SELECT pr.price
                                                 FROM cr_cart_association AS cr
                                                 INNER JOIN pr_products AS pr
                                                 ON cr.id_product = pr.id_product
-                                                WHERE id_user = :id_user", "id_user={$id_user}");
+                                                WHERE id_user = :id_user", [], "id_user={$id_user}", 's');
         $val_total = 0;
 
         $qnt_products = 0;
